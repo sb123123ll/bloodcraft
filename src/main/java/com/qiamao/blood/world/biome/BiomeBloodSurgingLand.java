@@ -19,6 +19,7 @@ public class BiomeBloodSurgingLand extends Biome {
 
     // 血腥树木生成器
     private static final WorldGenAbstractTree BLOOD_TREE = new WorldGenBloodTree(false);
+    private static final WorldGenAbstractTree BIG_BLOOD_TREE = new com.qiamao.blood.world.WorldGenBigBloodTree(false);
 
     public BiomeBloodSurgingLand() {
         super(new BiomeProperties("blood_surging_land")
@@ -108,7 +109,8 @@ public class BiomeBloodSurgingLand extends Biome {
      */
     @Override
     public WorldGenAbstractTree getRandomTreeFeature(@Nonnull Random rand) {
-        return BLOOD_TREE;
+        // 自然生成大变种概率和原版橡树大变种一致（原版通常是 10% 概率生成大型橡树）
+        return (rand.nextInt(10) == 0) ? BIG_BLOOD_TREE : BLOOD_TREE;
     }
 
     /**

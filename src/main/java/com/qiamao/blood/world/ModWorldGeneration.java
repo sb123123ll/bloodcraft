@@ -81,7 +81,11 @@ public class ModWorldGeneration implements IWorldGenerator {
                 Biome biome = world.getBiome(pos);
 
                 if (biome == ModBiomes.BLOOD_SURGING_LAND) {
-                    bloodTree.generate(world, random, pos);
+                    if (random.nextInt(10) == 0) {
+                        new com.qiamao.blood.world.WorldGenBigBloodTree(false).generate(world, random, pos);
+                    } else {
+                        bloodTree.generate(world, random, pos);
+                    }
                 }
             }
         }

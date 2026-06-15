@@ -85,7 +85,13 @@ public class BlockBloodSapling extends BlockBush implements IGrowable {
         // 先移除树苗
         worldIn.setBlockToAir(pos);
         
-        WorldGenBloodTree treeGen = new WorldGenBloodTree(true);
+        // 5% 概率生成大血腥树，95% 生成普通血腥树
+        net.minecraft.world.gen.feature.WorldGenAbstractTree treeGen;
+        if (rand.nextInt(20) == 0) {
+            treeGen = new com.qiamao.blood.world.WorldGenBigBloodTree(true);
+        } else {
+            treeGen = new WorldGenBloodTree(true);
+        }
         
         if (!treeGen.generate(worldIn, rand, pos)) {
             // 生成失败，放回阶段 1 的树苗
