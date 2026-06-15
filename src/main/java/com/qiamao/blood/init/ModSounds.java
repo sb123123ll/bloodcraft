@@ -110,6 +110,10 @@ public class ModSounds {
     public static final SoundEvent OPTIC_NERVE_STEP = new SoundEvent(new ResourceLocation(BloodMod.MODID, "entity.optic_nerve.step"))
             .setRegistryName(BloodMod.MODID, "entity.optic_nerve.step");
 
+    // 毒刺之杖发射音效
+    public static final SoundEvent VENOMOUS_STINGER_STAFF_SHOOT = new SoundEvent(new ResourceLocation(BloodMod.MODID, "item.venomous_stinger_staff.shoot"))
+            .setRegistryName(BloodMod.MODID, "item.venomous_stinger_staff.shoot");
+
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
         event.getRegistry().registerAll(
@@ -140,7 +144,8 @@ public class ModSounds {
             DESIRE_EVENT,
             OPTIC_NERVE_AMBIENT,
             OPTIC_NERVE_TARGET,
-            OPTIC_NERVE_STEP
+            OPTIC_NERVE_STEP,
+            VENOMOUS_STINGER_STAFF_SHOOT
         );
     }
 }

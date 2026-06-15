@@ -518,6 +518,7 @@ public class ModItems {
 
     public static final Item SPLASH_BLOOD_BOTTLE = new com.qiamao.blood.item.ItemSplashBloodBottle();
     public static final Item LINGERING_BLOOD_BOTTLE = new com.qiamao.blood.item.ItemLingeringBloodBottle();
+    public static final Item VENOMOUS_STINGER_STAFF = new com.qiamao.blood.item.ItemVenomousStingerStaff();
 
     /**
      * 注册发射器行为
@@ -574,7 +575,8 @@ public class ModItems {
                 BLOOD_TRAPDOOR_ITEM,
                 BLOOD_DOOR_ITEM,
                 BLOOD_FENCE_ITEM,
-                BLOOD_FENCE_GATE_ITEM
+                BLOOD_FENCE_GATE_ITEM,
+                VENOMOUS_STINGER_STAFF
         );
 
         // 绑定门物品到方块

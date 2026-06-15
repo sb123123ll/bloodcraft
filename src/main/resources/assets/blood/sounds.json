@@ -223,5 +223,12 @@
     "sounds": [
       "blood:entity/optic_nerve/step"
     ]
+  },
+  "item.venomous_stinger_staff.shoot": {
+    "category": "player",
+    "subtitle": "subtitles.item.venomous_stinger_staff.shoot",
+    "sounds": [
+      "blood:item/venomous_stinger_staff/shoot"
+    ]
   }
 }

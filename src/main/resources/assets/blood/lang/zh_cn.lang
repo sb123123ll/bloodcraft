@@ -18,6 +18,7 @@ item.thrown_blood_mite_item.name=血螨
 item.centipede_stinger.name=多足虫的刺
 item.stinger_powder.name=毒刺粉
 item.venomous_stinger_dagger.name=毒刺匕首
+item.venomous_stinger_staff.name=毒刺之杖
 item.blood_mite_meat.name=血螨肉
 item.optic_nerve_spawn_egg.name=视神经 刷怪蛋
 fluid.blood=血液
@@ -77,6 +78,9 @@ advancements.blood.eradicate_root.title=除根
 advancements.blood.eradicate_root.description=击杀庞大而恐怖的血液母体，终结血肉的根源！
 advancements.blood.obtain_sting_core.title=要素
 advancements.blood.obtain_sting_core.description=首次获得一颗毒刺核心。
+
+advancements.blood.not_simple.title=Not Simple
+advancements.blood.not_simple.description=获得毒刺之杖。
 advancements.blood.obtain_blood_core.title=强化物
 advancements.blood.obtain_blood_core.description=获得一颗血液核心。
 item.parasitic_steve_face.name=血螨脑控的脸
@@ -109,6 +113,8 @@ subtitles.event.desire=血撒大地
 subtitles.entity.optic_nerve.ambient=视神经：待机
 subtitles.entity.optic_nerve.target=视神经：锁定目标
 subtitles.entity.optic_nerve.step=视神经：行走
+
+subtitles.item.venomous_stinger_staff.shoot=毒刺之杖：发射毒液
 
 bloodcraft.configgui.title=欲望事件配置
 bloodcraft.configgui.spawnchance.name=欲望事件生成概率 (%)

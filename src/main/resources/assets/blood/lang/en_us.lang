@@ -18,6 +18,7 @@ item.thrown_blood_mite_item.name=Blood Mite
 item.centipede_stinger.name=Centipede Stinger
 item.stinger_powder.name=Stinger Powder
 item.venomous_stinger_dagger.name=Venomous Stinger Dagger
+item.venomous_stinger_staff.name=Venomous Stinger Staff
 item.blood_mite_meat.name=Blood Mite Meat
 item.optic_nerve_spawn_egg.name=Optic Nerve Spawn Egg
 fluid.blood=Blood
@@ -77,6 +78,9 @@ advancements.blood.eradicate_root.title=Eradicate the Root
 advancements.blood.eradicate_root.description=Kill the colossal Blood Mother to end the source of flesh!
 advancements.blood.obtain_sting_core.title=The Essence
 advancements.blood.obtain_sting_core.description=Obtain a Sting Core.
+
+advancements.blood.not_simple.title=Not Simple
+advancements.blood.not_simple.description=Obtain a Venomous Stinger Staff.
 advancements.blood.obtain_blood_core.title=Enhancement
 advancements.blood.obtain_blood_core.description=Obtain a Blood Core.
 item.parasitic_steve_face.name=Parasitic Steve Face
@@ -105,3 +109,5 @@ tile.blood_tempering_altar.name=Blood Tempering Altar
 config.blood.desire_event_spawn_chance=Desire Event Spawn Chance (%)
 config.blood.desire_event_spawn_boost=Desire Event Spawn Boost (%)
 message.blood.desire_event_start=The stars that night are already dead.
+
+subtitles.item.venomous_stinger_staff.shoot=Venomous Stinger Staff: Shoots Venom

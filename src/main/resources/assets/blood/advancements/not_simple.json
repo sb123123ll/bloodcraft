@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "item": "blood:venomous_stinger_staff"
+        },
+        "title": {
+            "translate": "advancements.blood.not_simple.title"
+        },
+        "description": {
+            "translate": "advancements.blood.not_simple.description"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "parent": "blood:obtain_sting_core",
+    "criteria": {
+        "has_venomous_stinger_staff": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "blood:venomous_stinger_staff"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -274,6 +274,8 @@ public class ModelRegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.BLOOD_FENCE_ITEM, 0, new ModelResourceLocation(ModBlocks.BLOOD_FENCE.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.BLOOD_FENCE_GATE_ITEM, 0, new ModelResourceLocation(ModBlocks.BLOOD_FENCE_GATE.getRegistryName(), "inventory"));
 
+        ModelLoader.setCustomModelResourceLocation(ModItems.VENOMOUS_STINGER_STAFF, 0, new ModelResourceLocation(ModItems.VENOMOUS_STINGER_STAFF.getRegistryName(), "inventory"));
+
         // 忽略门和栅栏门状态中的 powered 属性，防止由于缺少该属性变种导致模型加载失败（即出现紫黑块）
         ModelLoader.setCustomStateMapper(ModBlocks.BLOOD_DOOR, (new net.minecraft.client.renderer.block.statemap.StateMap.Builder()).ignore(net.minecraft.block.BlockDoor.POWERED).build());
         ModelLoader.setCustomStateMapper(ModBlocks.BLOOD_FENCE_GATE, (new net.minecraft.client.renderer.block.statemap.StateMap.Builder()).ignore(net.minecraft.block.BlockFenceGate.POWERED).build());

@@ -53,6 +53,14 @@ public class EntityPoisonBubble extends EntityThrowable implements IEntityAdditi
         return 0.0F; // 0 重力，直线飞行
     }
 
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (!this.world.isRemote && this.ticksExisted > 160) {
+            this.setDead();
+        }
+    }
+
     /**
      * 撞击时的逻辑
      */
@@ -68,6 +76,11 @@ public class EntityPoisonBubble extends EntityThrowable implements IEntityAdditi
             if (isPassableBlock(block)) {
                 // 直接穿过，不执行任何操作，继续飞行
                 return;
+            }
+
+            // 如果碰到血腥木系列方块，触发小型爆炸
+            if (isBloodWoodBlock(block)) {
+                triggerSmallExplosion();
             }
         }
 
@@ -87,6 +100,50 @@ public class EntityPoisonBubble extends EntityThrowable implements IEntityAdditi
 
         // 实体消失
         this.setDead();
+    }
+
+    /**
+     * 触发小型爆炸：只有粒子和1-3点范围伤害，不破坏方块
+     */
+    private void triggerSmallExplosion() {
+        // 在服务端生成爆炸粒子
+        if (this.world instanceof net.minecraft.world.WorldServer) {
+            ((net.minecraft.world.WorldServer) this.world).spawnParticle(
+                net.minecraft.util.EnumParticleTypes.EXPLOSION_NORMAL, 
+                this.posX, this.posY, this.posZ, 
+                10, 0.5D, 0.5D, 0.5D, 0.05D
+            );
+        }
+        
+        // 播放爆炸音效
+        this.world.playSound(null, this.posX, this.posY, this.posZ, 
+            net.minecraft.init.SoundEvents.ENTITY_GENERIC_EXPLODE, 
+            net.minecraft.util.SoundCategory.NEUTRAL, 0.5F, 1.5F + this.rand.nextFloat() * 0.5F);
+
+        // 对周围 2.5 格内的实体造成 1-3 点伤害
+        java.util.List<EntityLivingBase> entities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(2.5D));
+        for (EntityLivingBase entity : entities) {
+            // 注意：entity 和 this 都是不同类型，应该判断它们不是同一个对象，另外还要排除 thrower
+            if (entity != this.getThrower()) {
+                float damage = 1.0F + this.rand.nextFloat() * 2.0F; // 1.0 到 3.0 的伤害
+                entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setExplosion(), damage);
+            }
+        }
+    }
+
+    /**
+     * 检查是否是血腥木系列方块
+     */
+    private boolean isBloodWoodBlock(net.minecraft.block.Block block) {
+        return block == com.qiamao.blood.init.ModBlocks.BLOOD_LOG ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_PLANKS ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_DOOR ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_TRAPDOOR ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_SLAB_HALF ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_SLAB_DOUBLE ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_STAIRS ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_FENCE ||
+               block == com.qiamao.blood.init.ModBlocks.BLOOD_FENCE_GATE;
     }
 
     /**
