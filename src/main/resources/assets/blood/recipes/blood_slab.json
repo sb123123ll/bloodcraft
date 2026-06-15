@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "blood:blood_planks"
+        }
+    },
+    "result": {
+        "item": "blood:blood_slab_half",
+        "data": 0,
+        "count": 6
+    }
+}

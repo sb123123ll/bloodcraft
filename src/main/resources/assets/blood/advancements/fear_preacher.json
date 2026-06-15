@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "blood:cultist_preacher_face"
+    },
+    "title": {
+      "translate": "advancements.blood.fear_preacher.title"
+    },
+    "description": {
+      "translate": "advancements.blood.fear_preacher.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "blood:root",
+  "criteria": {
+    "fear_triggered": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

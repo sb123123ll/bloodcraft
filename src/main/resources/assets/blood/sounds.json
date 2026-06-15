@@ -1,0 +1,227 @@
+{
+  "bucket_empty_blood": {
+    "category": "block",
+    "subtitle": "subtitles.bucket_empty_blood",
+    "sounds": [
+      "blood:bucket_empty_blood_1",
+      "blood:bucket_empty_blood_2",
+      "blood:bucket_empty_blood_3"
+    ]
+  },
+  "bucket_fill_blood": {
+    "category": "block",
+    "subtitle": "subtitles.bucket_fill_blood",
+    "sounds": [
+      "blood:bucket_fill_blood"
+    ]
+  },
+  "drink_blood": {
+    "category": "player",
+    "subtitle": "subtitles.drink_blood",
+    "sounds": [
+      "blood:drink_blood"
+    ]
+  },
+  "blood_seeker_step": {
+    "category": "block",
+    "subtitle": "subtitles.blood_seeker_step",
+    "sounds": [
+      "blood:blood_seeker_step_1",
+      "blood:blood_seeker_step_2",
+      "blood:blood_seeker_step_3",
+      "blood:blood_seeker_step_4",
+      "blood:blood_seeker_step_5"
+    ]
+  },
+  "blood_seeker_extract": {
+    "category": "block",
+    "subtitle": "subtitles.blood_seeker_extract",
+    "sounds": [
+      "blood:blood_seeker_extract"
+    ]
+  },
+  "entity.centipede.ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.centipede.ambient",
+    "sounds": [
+      "blood:entity/centipede/ambient"
+    ]
+  },
+  "entity.centipede.hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.centipede.hurt",
+    "sounds": [
+      "blood:entity/centipede/hurt"
+    ]
+  },
+  "entity.centipede.death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.centipede.death",
+    "sounds": [
+      "blood:entity/centipede/death"
+    ]
+  },
+  "entity.centipede_larva.ambient": {
+    "category": "neutral",
+    "subtitle": "subtitles.entity.centipede_larva.ambient",
+    "sounds": [
+      "blood:entity/centipede/ambient"
+    ]
+  },
+  "entity.centipede_larva.hurt": {
+    "category": "neutral",
+    "subtitle": "subtitles.entity.centipede_larva.hurt",
+    "sounds": [
+      "blood:entity/centipede/hurt"
+    ]
+  },
+  "entity.centipede_larva.death": {
+    "category": "neutral",
+    "subtitle": "subtitles.entity.centipede_larva.death",
+    "sounds": [
+      "blood:entity/centipede/death"
+    ]
+  },
+  "entity.blood_mite.ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mite.ambient",
+    "sounds": [
+      "blood:entity/blood_mite/ambient1",
+      "blood:entity/blood_mite/ambient2",
+      "blood:entity/blood_mite/ambient3",
+      "blood:entity/blood_mite/ambient4"
+    ]
+  },
+  "entity.blood_mite.hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mite.hurt",
+    "sounds": [
+      "blood:entity/blood_mite/hurt1",
+      "blood:entity/blood_mite/hurt2",
+      "blood:entity/blood_mite/hurt3"
+    ]
+  },
+  "entity.blood_mite.death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mite.death",
+    "sounds": [
+      "blood:entity/blood_mite/death"
+    ]
+  },
+  "entity.blood_mite.step": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mite.step",
+    "sounds": [
+      "blood:entity/blood_mite/step1",
+      "blood:entity/blood_mite/step2",
+      "blood:entity/blood_mite/step3",
+      "blood:entity/blood_mite/step4"
+    ]
+  },
+  "entity.parasitic_steve.ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.parasitic_steve.ambient",
+    "sounds": [
+      "blood:entity/parasitic_steve/ambient1",
+      "blood:entity/parasitic_steve/ambient2"
+    ]
+  },
+  "entity.parasitic_steve.hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.parasitic_steve.hurt",
+    "sounds": [
+      "blood:entity/parasitic_steve/hurt"
+    ]
+  },
+  "entity.blood_mother.ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mother.ambient",
+    "sounds": [
+      "blood:entity/blood_mother/ambient1",
+      "blood:entity/blood_mother/ambient2",
+      "blood:entity/blood_mother/ambient3",
+      "blood:entity/blood_mother/ambient4"
+    ]
+  },
+  "entity.blood_mother.hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mother.hurt",
+    "sounds": [
+      "blood:entity/blood_mother/hurt1",
+      "blood:entity/blood_mother/hurt2",
+      "blood:entity/blood_mother/hurt3"
+    ]
+  },
+  "entity.blood_mother.death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mother.death",
+    "sounds": [
+      "blood:entity/blood_mother/death"
+    ]
+  },
+  "entity.blood_mother.step": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.blood_mother.step",
+    "sounds": [
+      "blood:entity/blood_mother/step1",
+      "blood:entity/blood_mother/step2",
+      "blood:entity/blood_mother/step3",
+      "blood:entity/blood_mother/step4"
+    ]
+  },
+  "entity.cultist_preacher.ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.cultist_preacher.ambient",
+    "sounds": [
+      "blood:entity/cultist_preacher/ambient1",
+      "blood:entity/cultist_preacher/ambient2"
+    ]
+  },
+  "entity.cultist_preacher.hurt": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.cultist_preacher.hurt",
+    "sounds": [
+      "blood:entity/cultist_preacher/hurt"
+    ]
+  },
+  "entity.cultist_preacher.death": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.cultist_preacher.death",
+    "sounds": [
+      "blood:entity/cultist_preacher/death"
+    ]
+  },
+  "event.desire": {
+    "category": "ambient",
+    "subtitle": "subtitles.event.desire",
+    "sounds": [
+      "blood:event/desire"
+    ]
+  },
+  "entity.optic_nerve.ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.optic_nerve.ambient",
+    "sounds": [
+      "blood:entity/optic_nerve/ambient"
+    ]
+  },
+  "entity.optic_nerve.target": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.optic_nerve.target",
+    "sounds": [
+      "blood:entity/optic_nerve/target_1",
+      "blood:entity/optic_nerve/target_2",
+      "blood:entity/optic_nerve/target_3",
+      "blood:entity/optic_nerve/target_4",
+      "blood:entity/optic_nerve/target_5",
+      "blood:entity/optic_nerve/target_6"
+    ]
+  },
+  "entity.optic_nerve.step": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.optic_nerve.step",
+    "sounds": [
+      "blood:entity/optic_nerve/step"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "blood:blood_core"
+    },
+    "title": {
+      "translate": "advancements.blood.obtain_blood_core.title"
+    },
+    "description": {
+      "translate": "advancements.blood.obtain_blood_core.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "blood:root",
+  "criteria": {
+    "has_blood_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "blood:blood_core"
+          }
+        ]
+      }
+    }
+  }
+}

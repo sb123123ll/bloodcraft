@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "variant=default": { "model": "blood:blood_slab_double" }
+    }
+}

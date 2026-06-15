@@ -1,0 +1,6 @@
+{
+    "parent": "block/fence_gate_closed",
+    "textures": {
+        "texture": "blood:blocks/planks_blood"
+    }
+}

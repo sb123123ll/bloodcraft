@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "blood:plucked_eye"
+    },
+    "title": {
+      "translate": "advancements.blood.eat_eye.title"
+    },
+    "description": {
+      "translate": "advancements.blood.eat_eye.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "blood:root",
+  "criteria": {
+    "eat_eye": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "blood:plucked_eye"
+        }
+      }
+    }
+  }
+}

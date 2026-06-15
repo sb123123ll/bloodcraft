@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "blood:blood_altar" },
+    "facing=south": { "model": "blood:blood_altar", "y": 180 },
+    "facing=west":  { "model": "blood:blood_altar", "y": 270 },
+    "facing=east":  { "model": "blood:blood_altar", "y": 90 }
+  }
+}

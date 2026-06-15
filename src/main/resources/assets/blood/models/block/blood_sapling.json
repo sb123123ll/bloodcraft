@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "blood:blocks/blood_sapling"
+  }
+}

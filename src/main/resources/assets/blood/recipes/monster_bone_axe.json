@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FS ",
+    "FB ",
+    " B "
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "S": {
+      "item": "minecraft:lead"
+    },
+    "B": {
+      "item": "blood:monster_bone_skeleton"
+    }
+  },
+  "result": {
+    "item": "blood:monster_bone_axe"
+  }
+}

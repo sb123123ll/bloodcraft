@@ -1,0 +1,8 @@
+{
+    "parent": "block/half_slab",
+    "textures": {
+        "bottom": "blood:blocks/planks_blood",
+        "top": "blood:blocks/planks_blood",
+        "side": "blood:blocks/planks_blood"
+    }
+}

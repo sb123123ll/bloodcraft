@@ -1,0 +1,16 @@
+[
+{
+  "modid": "blood",
+  "name": "Bloodcraft",
+  "description": "血腥时代",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["qiamao"],
+  "credits": "Forge and FML",
+  "logoFile": "logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]

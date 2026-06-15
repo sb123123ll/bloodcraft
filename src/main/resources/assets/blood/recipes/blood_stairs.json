@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#  ",
+        "## ",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "blood:blood_planks"
+        }
+    },
+    "result": {
+        "item": "blood:blood_stairs",
+        "count": 4
+    }
+}

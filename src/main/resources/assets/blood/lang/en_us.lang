@@ -1,0 +1,107 @@
+itemGroup.blood=§c§lBloodcraft Age
+entity.blood.centipede_blood_seeker.name=Centipede Blood Seeker
+entity.blood.centipede_blood_seeker_larva.name=Centipede Blood Seeker Larva
+entity.blood.blood_mite.name=Blood Mite
+entity.blood.parasitic_steve.name=Blood Mite Mind-Controlled
+entity.blood.blood_mother.name=Blood Mother
+entity.blood.cultist_preacher.name=Preacher
+entity.blood.optic_nerve.name=Optic Nerve
+item.bucket_blood.name=Bucket of Blood
+item.blood_bottle.name=Bottle of Blood
+item.splash_blood_bottle.name=Splash Bottle of Blood
+item.lingering_blood_bottle.name=Lingering Bottle of Blood
+item.cursed_flesh_chunk_item.name=Cursed Flesh Chunk
+item.plucked_eye.name=Resentful Eye
+item.gory_flesh.name=Gory Flesh
+item.cooked_gory_flesh.name=Cooked Gory Flesh
+item.thrown_blood_mite_item.name=Blood Mite
+item.centipede_stinger.name=Centipede Stinger
+item.stinger_powder.name=Stinger Powder
+item.venomous_stinger_dagger.name=Venomous Stinger Dagger
+item.blood_mite_meat.name=Blood Mite Meat
+item.optic_nerve_spawn_egg.name=Optic Nerve Spawn Egg
+fluid.blood=Blood
+tile.blood.name=Blood
+tile.cursed_flesh_chunk.name=Cursed Flesh Chunk
+tile.blood_log.name=Gory Log
+tile.blood_planks.name=Gory Planks
+tile.blood_slab.name=Gory Slab
+tile.blood_stairs.name=Gory Stairs
+tile.blood_leaves.name=Blood Leaves
+tile.blood_trapdoor.name=Blood Wood Trapdoor
+item.blood_door.name=Blood Wood Door
+tile.blood_door.name=Blood Wood Door
+tile.blood_fence.name=Gory Fence
+tile.blood_fence_gate.name=Gory Fence Gate
+tile.flesh_chunk.name=Flesh Chunk
+tile.blood_sapling.name=Blood Tree Sapling
+subtitles.bucket_empty_blood=Blood: Emptied
+subtitles.bucket_fill_blood=Blood: Filled
+subtitles.drink_blood=Drinking Blood
+subtitles.blood_seeker_step=Flesh: Stepped
+subtitles.blood_seeker_extract=Flesh: Extracted
+
+subtitles.entity.centipede.ambient=Centipede: Screeches
+subtitles.entity.centipede.hurt=Centipede: Hurts
+subtitles.entity.centipede.death=Centipede: Dies
+
+subtitles.entity.centipede_larva.ambient=Centipede Larva: Screeches
+subtitles.entity.centipede_larva.hurt=Centipede Larva: Hurts
+subtitles.entity.centipede_larva.death=Centipede Larva: Dies
+
+subtitles.entity.blood_mite.ambient=Blood Mite: Screeches
+subtitles.entity.blood_mite.hurt=Blood Mite: Hurts
+subtitles.entity.blood_mite.death=Blood Mite: Dies
+subtitles.entity.blood_mite.step=Blood Mite: Crawls
+
+subtitles.entity.parasitic_steve.ambient=Parasitic Steve: Roars
+subtitles.entity.parasitic_steve.hurt=Parasitic Steve: Hurts
+
+subtitles.entity.blood_mother.ambient=Blood Mother: Screeches
+subtitles.entity.blood_mother.hurt=Blood Mother: Hurts
+subtitles.entity.blood_mother.death=Blood Mother: Dies
+subtitles.entity.blood_mother.step=Blood Mother: Crawls
+
+subtitles.entity.cultist_preacher.ambient=Cultist Preacher: Whispers
+subtitles.entity.cultist_preacher.hurt=Cultist Preacher: Hurts
+subtitles.entity.cultist_preacher.death=Cultist Preacher: Dies
+
+advancements.blood.root.title=Bloodcraft Age
+advancements.blood.root.description=Enter the world of flesh and blood
+advancements.blood.eat_eye.title=You are disobedient...
+advancements.blood.eat_eye.description=Eat a beating Resentful Eye.
+
+advancements.blood.kill_parasitic_steve.title=Who is the victim?
+advancements.blood.kill_parasitic_steve.description=Obtained the moment a Parasitic Steve is beaten until it explodes.
+advancements.blood.eradicate_root.title=Eradicate the Root
+advancements.blood.eradicate_root.description=Kill the colossal Blood Mother to end the source of flesh!
+advancements.blood.obtain_sting_core.title=The Essence
+advancements.blood.obtain_sting_core.description=Obtain a Sting Core.
+advancements.blood.obtain_blood_core.title=Enhancement
+advancements.blood.obtain_blood_core.description=Obtain a Blood Core.
+item.parasitic_steve_face.name=Parasitic Steve Face
+tile.parasitic_steve_head.name=Parasitic Steve Head
+tile.preacher_head.name=Preacher Head
+
+advancements.blood.eat_blood_mite_meat.title=Ugh...
+advancements.blood.eat_blood_mite_meat.description=Obtained when eating Blood Mite Meat for the first time.
+
+advancements.blood.fear_preacher.title=I will remember you...
+advancements.blood.fear_preacher.description=Kill a Cultist Preacher and fall into deep fear.
+
+biome.blood.blood_surging_land.name=Blood Surging Land
+tile.blood_block.name=Blood Block
+structure.blood.missionary_house.name=Missionary House
+effect.fear=Fear
+item.monster_bone_axe.name=Monster Bone Axe
+item.monster_bone_skeleton.name=Monster Bone Skeleton
+item.sting_core.name=Sting Core
+item.sting_core_fragment.name=Sting Core Fragment
+item.blood_core.name=Blood Core
+tile.blood_altar.name=Blood Sublimation Table
+tile.blood_tempering_altar.name=Blood Tempering Altar
+
+# Desire Event
+config.blood.desire_event_spawn_chance=Desire Event Spawn Chance (%)
+config.blood.desire_event_spawn_boost=Desire Event Spawn Boost (%)
+message.blood.desire_event_start=The stars that night are already dead.

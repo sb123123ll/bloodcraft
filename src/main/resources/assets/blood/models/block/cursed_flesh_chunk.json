@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "blood:blocks/rotten_meat",
+        "down": "blood:blocks/rotten_meat",
+        "up": "blood:blocks/blood_seeker_flesh_top",
+        "north": "blood:blocks/rotten_meat",
+        "east": "blood:blocks/rotten_meat",
+        "south": "blood:blocks/rotten_meat",
+        "west": "blood:blocks/rotten_meat"
+    }
+}

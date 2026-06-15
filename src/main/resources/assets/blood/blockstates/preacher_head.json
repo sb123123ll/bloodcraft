@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=north": { "model": "blood:skull/preacher_head" },
+        "facing=east":  { "model": "blood:skull/preacher_head", "y": 90 },
+        "facing=south": { "model": "blood:skull/preacher_head", "y": 180 },
+        "facing=west":  { "model": "blood:skull/preacher_head", "y": 270 },
+        "facing=up":    { "model": "blood:skull/preacher_head" }
+    }
+}

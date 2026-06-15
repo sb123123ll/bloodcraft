@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "blood:blood_log"
+    }
+  ],
+  "result": {
+    "item": "blood:blood_planks",
+    "count": 4
+  }
+}

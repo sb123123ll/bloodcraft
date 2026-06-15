@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "blood:blood_mite_meat"
+    },
+    "title": {
+      "translate": "advancements.blood.eat_blood_mite_meat.title"
+    },
+    "description": {
+      "translate": "advancements.blood.eat_blood_mite_meat.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "blood:root",
+  "criteria": {
+    "eat_blood_mite_meat": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "blood:blood_mite_meat"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "blood:blood_mite_meat"
+    },
+    "title": {
+      "translate": "advancements.blood.eradicate_root.title"
+    },
+    "description": {
+      "translate": "advancements.blood.eradicate_root.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "blood:root",
+  "criteria": {
+    "kill_blood_mother": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "blood:blood_mother"
+        }
+      }
+    }
+  }
+}

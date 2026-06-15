@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_top",
+    "textures": {
+        "bottom": "blood:blocks/blood_door_lower",
+        "top": "blood:blocks/blood_door_upper"
+    }
+}

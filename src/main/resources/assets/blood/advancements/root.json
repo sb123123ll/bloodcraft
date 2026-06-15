@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "blood:cursed_flesh_chunk"
+    },
+    "title": {
+      "translate": "advancements.blood.root.title"
+    },
+    "description": {
+      "translate": "advancements.blood.root.description"
+    },
+    "background": "minecraft:textures/blocks/nether_brick.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

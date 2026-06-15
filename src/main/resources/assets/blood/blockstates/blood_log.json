@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "axis=y":  { "model": "blood:blood_log" },
+        "axis=z":   { "model": "blood:blood_log", "x": 90 },
+        "axis=x":   { "model": "blood:blood_log", "x": 90, "y": 90 },
+        "axis=none": { "model": "blood:blood_log" }
+    }
+}

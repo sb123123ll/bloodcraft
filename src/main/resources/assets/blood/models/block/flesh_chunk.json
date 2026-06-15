@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "blood:blocks/flesh_chunk",
+        "down": "blood:blocks/flesh_chunk",
+        "up": "blood:blocks/flesh_chunk",
+        "north": "blood:blocks/flesh_chunk",
+        "east": "blood:blocks/flesh_chunk",
+        "south": "blood:blocks/flesh_chunk",
+        "west": "blood:blocks/flesh_chunk"
+    }
+}

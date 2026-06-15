@@ -1,0 +1,26 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "blood:blocks/skull/parasitic_steve_head_front",
+        "up": "blood:blocks/skull/parasitic_steve_head_top",
+        "down": "blood:blocks/skull/parasitic_steve_head_bottom",
+        "north": "blood:blocks/skull/parasitic_steve_head_front",
+        "south": "blood:blocks/skull/parasitic_steve_head_back",
+        "east": "blood:blocks/skull/parasitic_steve_head_left",
+        "west": "blood:blocks/skull/parasitic_steve_head_right"
+    },
+    "elements": [
+        {
+            "from": [4, 0, 4],
+            "to": [12, 8, 12],
+            "faces": {
+                "down":  { "uv": [0, 0, 16, 16], "texture": "#down" },
+                "up":    { "uv": [0, 0, 16, 16], "texture": "#up" },
+                "north": { "uv": [0, 0, 16, 16], "texture": "#north" },
+                "south": { "uv": [0, 0, 16, 16], "texture": "#south" },
+                "west":  { "uv": [0, 0, 16, 16], "texture": "#west" },
+                "east":  { "uv": [0, 0, 16, 16], "texture": "#east" }
+            }
+        }
+    ]
+}

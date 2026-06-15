@@ -1,0 +1,26 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "blood:blocks/skull/preacher_head_front",
+        "up": "blood:blocks/skull/preacher_head_top",
+        "down": "blood:blocks/skull/preacher_head_bottom",
+        "north": "blood:blocks/skull/preacher_head_front",
+        "south": "blood:blocks/skull/preacher_head_back",
+        "east": "blood:blocks/skull/preacher_head_left",
+        "west": "blood:blocks/skull/preacher_head_right"
+    },
+    "elements": [
+        {
+            "from": [4, 0, 4],
+            "to": [12, 10, 12],
+            "faces": {
+                "down":  { "uv": [0, 0, 8, 8], "texture": "#down" },
+                "up":    { "uv": [0, 0, 8, 8], "texture": "#up" },
+                "north": { "uv": [0, 0, 8, 10], "texture": "#north" },
+                "south": { "uv": [0, 0, 8, 10], "texture": "#south" },
+                "west":  { "uv": [0, 0, 8, 10], "texture": "#west" },
+                "east":  { "uv": [0, 0, 8, 10], "texture": "#east" }
+            }
+        }
+    ]
+}
