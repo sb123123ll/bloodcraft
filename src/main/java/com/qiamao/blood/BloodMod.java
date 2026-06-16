@@ -25,7 +25,7 @@ import com.qiamao.blood.network.BloodNetwork;
 public class BloodMod {
     public static final String MODID = "blood";
     public static final String NAME = "Bloodcraft";
-    public static final String VERSION = "0.0.27a";
+    public static final String VERSION = "0.0.28a";
 
     @SidedProxy(clientSide = "com.qiamao.blood.proxy.ClientProxy", serverSide = "com.qiamao.blood.proxy.CommonProxy")
     public static CommonProxy proxy;

@@ -491,13 +491,16 @@ public class ModItems {
 
     // 血液祭坛物品
     public static final Item BLOOD_ALTAR_ITEM = new net.minecraft.item.ItemBlock(ModBlocks.BLOOD_ALTAR)
-            .setRegistryName(ModBlocks.BLOOD_ALTAR.getRegistryName());
+            .setRegistryName(ModBlocks.BLOOD_ALTAR.getRegistryName())
+            .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
 
     // 头颅物品
     public static final Item PARASITIC_STEVE_HEAD_ITEM = new net.minecraft.item.ItemBlock(ModBlocks.PARASITIC_STEVE_HEAD)
-            .setRegistryName(ModBlocks.PARASITIC_STEVE_HEAD.getRegistryName());
+            .setRegistryName(ModBlocks.PARASITIC_STEVE_HEAD.getRegistryName())
+            .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
     public static final Item PREACHER_HEAD_ITEM = new net.minecraft.item.ItemBlock(ModBlocks.PREACHER_HEAD)
-            .setRegistryName(ModBlocks.PREACHER_HEAD.getRegistryName());
+            .setRegistryName(ModBlocks.PREACHER_HEAD.getRegistryName())
+            .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
 
     public static final Item BLOOD_TRAPDOOR_ITEM = new net.minecraft.item.ItemBlock(ModBlocks.BLOOD_TRAPDOOR)
             .setRegistryName(ModBlocks.BLOOD_TRAPDOOR.getRegistryName())

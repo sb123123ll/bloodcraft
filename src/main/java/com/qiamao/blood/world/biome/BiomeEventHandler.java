@@ -280,9 +280,7 @@ public class BiomeEventHandler {
         }
 
         // 只允许本模组生物生成
-        boolean isModEntity = entity instanceof EntityBloodSeeker ||
-                             entity instanceof EntityParasiticSteve ||
-                             entity instanceof EntityBloodEndermite;
+        boolean isModEntity = entity.getClass().getName().startsWith("com.qiamao.blood.entity");
 
         if (!isModEntity) {
             // 阻止非本模组生物生成
@@ -306,9 +304,7 @@ public class BiomeEventHandler {
         }
 
         // 只允许本模组生物
-        boolean isModEntity = entity instanceof EntityBloodSeeker ||
-                             entity instanceof EntityParasiticSteve ||
-                             entity instanceof EntityBloodEndermite;
+        boolean isModEntity = entity.getClass().getName().startsWith("com.qiamao.blood.entity");
 
         if (!isModEntity) {
             event.setCanceled(true);
@@ -342,14 +338,9 @@ public class BiomeEventHandler {
         }
 
         // 检查是否是本模组生物
-        boolean isModEntity = entity instanceof EntityBloodSeeker ||
-                             entity instanceof EntityParasiticSteve ||
-                             entity instanceof EntityBloodEndermite;
+        boolean isModEntity = entity.getClass().getName().startsWith("com.qiamao.blood.entity");
 
-        // 额外检查：是否是血螨（由投掷产生的实体）
-        boolean isThrownBloodMite = entity instanceof com.qiamao.blood.entity.EntityThrownBloodMite;
-
-        if (!isModEntity && !isThrownBloodMite) {
+        if (!isModEntity) {
             // 阻止非本模组生物加入世界
             event.setCanceled(true);
         }

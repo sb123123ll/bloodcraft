@@ -57,7 +57,7 @@ public class BloodCreativeTab extends CreativeTabs {
             
             if (item == ModItems.BLOOD_BOTTLE || item == ModItems.SPLASH_BLOOD_BOTTLE || item == ModItems.LINGERING_BLOOD_BOTTLE || item == ModItems.BUCKET_BLOOD) {
                 potions.add(stack);
-            } else if (item == ModItems.VENOMOUS_STINGER_DAGGER || item == ModItems.MONSTER_BONE_AXE) {
+            } else if (item == ModItems.VENOMOUS_STINGER_DAGGER || item == ModItems.MONSTER_BONE_AXE || item == ModItems.VENOMOUS_STINGER_STAFF) {
                 weapons.add(stack);
             } else if (item instanceof net.minecraft.item.ItemBlock || item == ModItems.BLOOD_DOOR_ITEM) {
                 blocks.add(stack);
@@ -130,6 +130,15 @@ public class BloodCreativeTab extends CreativeTabs {
         nbtOpticNerve.setTag("EntityTag", entityTagOpticNerve);
         spawnEggOpticNerve.setTagCompound(nbtOpticNerve);
         spawnEggs.add(spawnEggOpticNerve);
+
+        // 7. 血液猎犬 刷怪蛋
+        ItemStack spawnEggHound = new ItemStack(Items.SPAWN_EGG);
+        NBTTagCompound nbtHound = new NBTTagCompound();
+        NBTTagCompound entityTagHound = new NBTTagCompound();
+        entityTagHound.setString("id", BloodMod.MODID + ":blood_hound");
+        nbtHound.setTag("EntityTag", entityTagHound);
+        spawnEggHound.setTagCompound(nbtHound);
+        spawnEggs.add(spawnEggHound);
 
         // 按分类顺序添加到最终列表中
         p_78018_1_.addAll(blocks);
