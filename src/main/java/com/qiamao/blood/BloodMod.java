@@ -14,9 +14,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Logger;
 import com.qiamao.blood.world.ModWorldGeneration;
-import com.qiamao.blood.world.VillageMissionaryHouse;
-import com.qiamao.blood.world.VillageMissionaryHouseCreationHandler;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraft.init.Blocks;
@@ -75,14 +72,6 @@ public class BloodMod {
 
         // 注册发射器行为
         com.qiamao.blood.init.ModItems.registerDispenserBehaviors();
-
-        // 注册村庄建筑（传教士屋）
-        VillagerRegistry.instance().registerVillageCreationHandler(new VillageMissionaryHouseCreationHandler());
-        try {
-            MapGenStructureIO.registerStructureComponent(VillageMissionaryHouse.class, "blood:missionary_house");
-        } catch (Exception e) {
-            logger.error("Failed to register missionary house structure component", e);
-        }
 
         // 注册原木和木板的 OreDictionary
         // 这样它们就可以像原版木头一样用来合成木棍、工作台、木箱、木剑等任何使用木板的配方

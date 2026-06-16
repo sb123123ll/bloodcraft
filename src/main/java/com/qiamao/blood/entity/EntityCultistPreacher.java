@@ -39,11 +39,11 @@ public class EntityCultistPreacher extends EntityMob {
         // 开关木门AI
         this.tasks.addTask(2, new EntityAIOpenDoor(this, true));
         
-        // 近战攻击
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.3D, false));
+        // 近战攻击: 速度倍率设为 1.0D，配合 0.23D 的基础速度，使其索敌和追击速度与原版僵尸一模一样
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
         
-        // 闲时移动
-        this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.1D));
+        // 闲时移动: 速度倍率设为 1.0D
+        this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
 
@@ -60,8 +60,8 @@ public class EntityCultistPreacher extends EntityMob {
         super.applyEntityAttributes();
         // 17.5颗心（35血）
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35.0D);
-        // 闲时移动速度：玩家行走速度 0.1
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
+        // 闲时移动速度与僵尸一致 (原版僵尸的基础速度是0.23D)
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
         // 攻击力：3颗心（6点伤害）
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
         // 索敌范围：16格
@@ -71,18 +71,9 @@ public class EntityCultistPreacher extends EntityMob {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
-        // 索敌后速度为玩家奔跑时速度的75%
-        // 玩家奔跑速度约0.13，75%约为0.1，与闲时速度相同
-        // 如果需要区分，可以在攻击时临时提高速度
-        EntityLivingBase target = this.getAttackTarget();
-        if (target != null) {
-            // 追击时提高速度到玩家奔跑速度的75%（约0.1）
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
-        } else {
-            // 闲时速度：玩家行走速度（约0.1）
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
-        }
+        // 移除了动态修改 MOVEMENT_SPEED 的逻辑。
+        // 现在直接依赖 AI 系统的倍率：闲逛 AI (EntityAIWander) 倍率为 1.0D，
+        // 近战攻击 AI (EntityAIAttackMelee) 原本是 1.3D，我现在已将其下调，使其实际追击速度与原版僵尸追击完全一致。
     }
 
     @Override

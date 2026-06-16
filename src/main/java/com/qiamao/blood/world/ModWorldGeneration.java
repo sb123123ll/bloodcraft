@@ -17,6 +17,7 @@ public class ModWorldGeneration implements IWorldGenerator {
     private final WorldGenBloodTree bloodTree = new WorldGenBloodTree(false);
     private final WorldGenBloodStructure bloodStructure = new WorldGenBloodStructure("blood_big", "blood_big_2", 32);
     private final WorldGenFleshCluster fleshCluster = new WorldGenFleshCluster();
+    private final WorldGenMissionaryHouse missionaryHouse = new WorldGenMissionaryHouse();
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
@@ -44,7 +45,7 @@ public class ModWorldGeneration implements IWorldGenerator {
 
         // 如果当前区块正是被选中的区块，则决定生成哪一种结构
         if (chunkX == selectedChunkX && chunkZ == selectedChunkZ) {
-            int structureType = gridRandom.nextInt(2); // 0: 血巢, 1: 血祭坛
+            int structureType = gridRandom.nextInt(3); // 0: 血巢, 1: 血祭坛, 2: 传教士屋
             
             // 为了安全，大型结构只在当前区块的 x,z=8 的中心生成
             int x = chunkX * 16 + 8;
@@ -67,6 +68,17 @@ public class ModWorldGeneration implements IWorldGenerator {
 
                 if (canGenerate) {
                     bloodAltar.generate(world, gridRandom, pos);
+                }
+            } else if (structureType == 2) {
+                // 生成传教士屋
+                BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
+                Biome biome = world.getBiome(pos);
+                
+                boolean canGenerate = BiomeDictionary.hasType(biome, BiomeDictionary.Type.PLAINS) ||
+                                      BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST);
+                
+                if (canGenerate) {
+                    missionaryHouse.generate(world, gridRandom, pos);
                 }
             }
         }
