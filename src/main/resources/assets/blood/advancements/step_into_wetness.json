@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "blood:flesh_chunk"
+    },
+    "title": {
+      "translate": "advancements.blood.step_into_wetness.title"
+    },
+    "description": {
+      "translate": "advancements.blood.step_into_wetness.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "blood:root",
+  "criteria": {
+    "enter_blood_surging_land": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "biome": "blood:blood_surging_land"
+      }
+    }
+  }
+}

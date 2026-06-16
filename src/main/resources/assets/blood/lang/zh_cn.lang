@@ -6,6 +6,7 @@ entity.blood.parasitic_steve.name=血螨脑控
 entity.blood.blood_mother.name=血液母体
 entity.blood.cultist_preacher.name=传教士
 entity.blood.optic_nerve.name=视神经
+entity.blood.blood_hound.name=血液猎犬
 item.bucket_blood.name=桶装血液
 item.blood_bottle.name=瓶装血液
 item.splash_blood_bottle.name=喷溅型瓶装血液
@@ -89,6 +90,8 @@ tile.preacher_head.name=传教士的头颅
 
 advancements.blood.eat_blood_mite_meat.title=呕...
 advancements.blood.eat_blood_mite_meat.description=第一次吃血螨肉时获得。
+advancements.blood.step_into_wetness.title=踏入潮湿
+advancements.blood.step_into_wetness.description=首次进入血液翻腾之地群系。
 
 biome.blood.blood_surging_land.name=血液翻腾之地
 tile.blood_block.name=血块

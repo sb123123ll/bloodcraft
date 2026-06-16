@@ -148,6 +148,17 @@ public class ModEntities {
 
         event.getRegistry().register(cultistPreacher);
 
+        // 注册 血液猎犬 (Blood Hound)
+        EntityEntry bloodHound = EntityEntryBuilder.create()
+                .entity(com.qiamao.blood.entity.EntityBloodHound.class)
+                .id(new ResourceLocation(BloodMod.MODID, "blood_hound"), entityId++)
+                .name(BloodMod.MODID + ".blood_hound")
+                .tracker(80, 3, true)
+                .egg(0x8B0000, 0x555555) // 深红色和深灰色
+                .build();
+
+        event.getRegistry().register(bloodHound);
+
         // 注册 视神经 (Optic Nerve)
         EntityEntry opticNerve = EntityEntryBuilder.create()
                 .entity(com.qiamao.blood.entity.EntityOpticNerve.class)

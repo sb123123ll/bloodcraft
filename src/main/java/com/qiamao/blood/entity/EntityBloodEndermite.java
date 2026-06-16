@@ -48,7 +48,10 @@ public class EntityBloodEndermite extends EntityMob implements IRangedAttackMob 
         this.tasks.addTask(8, new EntityAILookIdle(this));
 
         // 目标AI：主动寻找玩家攻击
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false, false));
+        this.targetTasks.addTask(1, new net.minecraft.entity.ai.EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        // 主动攻击血液猎犬
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityBloodHound.class, true));
     }
 
     /**

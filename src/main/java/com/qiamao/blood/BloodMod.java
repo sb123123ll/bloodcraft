@@ -28,7 +28,7 @@ import com.qiamao.blood.network.BloodNetwork;
 public class BloodMod {
     public static final String MODID = "blood";
     public static final String NAME = "Bloodcraft";
-    public static final String VERSION = "0.0.25a";
+    public static final String VERSION = "0.0.27a";
 
     @SidedProxy(clientSide = "com.qiamao.blood.proxy.ClientProxy", serverSide = "com.qiamao.blood.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -199,18 +199,48 @@ public class BloodMod {
                 spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
 
+        // --- 血液猎犬生成 (Blood Hound) ---
+        // 权重6。每次2-4只。不在干燥和寒冷群系生成。
+        java.util.List<net.minecraft.world.biome.Biome> houndBiomes = new java.util.ArrayList<>();
+        for (net.minecraft.world.biome.Biome biome : spawnBiomes) {
+            if (!net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.SANDY) &&
+                !net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.DRY) &&
+                !net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.HOT)) {
+                houndBiomes.add(biome);
+            }
+        }
+        
+        // 注册为 MONSTER (晚上)
+        net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
+                com.qiamao.blood.entity.EntityBloodHound.class, 
+                6, 
+                2, 
+                4, 
+                net.minecraft.entity.EnumCreatureType.MONSTER, 
+                houndBiomes.toArray(new net.minecraft.world.biome.Biome[0])
+        );
+        // 注册为 CREATURE (白天)
+        net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
+                com.qiamao.blood.entity.EntityBloodHound.class, 
+                6, 
+                2, 
+                4, 
+                net.minecraft.entity.EnumCreatureType.CREATURE, 
+                houndBiomes.toArray(new net.minecraft.world.biome.Biome[0])
+        );
+
         // --- 视神经生成 (Optic Nerve) ---
-        // 主世界晚上: 67% 的多足虫概率 (7 * 0.67 = 4.69 ≈ 5)
+        // 主世界晚上: 权重6
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityOpticNerve.class, 
-                5, 
+                6, 
                 1, 
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
                 spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
 
-        // 森林群系额外权重: 75% 的多足虫概率 (7 * 0.75 = 5.25 ≈ 5)
+        // 森林群系额外权重: 权重6
         // 找出所有森林群系
         java.util.List<net.minecraft.world.biome.Biome> forestBiomes = new java.util.ArrayList<>();
         for (net.minecraft.world.biome.Biome biome : spawnBiomes) {
@@ -220,7 +250,7 @@ public class BloodMod {
         }
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityOpticNerve.class, 
-                5, 
+                6, 
                 1, 
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -236,7 +266,7 @@ public class BloodMod {
         }
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityOpticNerve.class, 
-                5, 
+                6, 
                 1, 
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -279,6 +309,25 @@ public class BloodMod {
                 1,
                 1,
                 net.minecraft.entity.EnumCreatureType.MONSTER,
+                bloodSurgingLand
+        );
+
+        // 血液猎犬在血液翻腾之地的总权重设为 11
+        // 因为外界基础权重是 6，所以这里额外追加 5
+        net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
+                com.qiamao.blood.entity.EntityBloodHound.class,
+                5,
+                2,
+                4,
+                net.minecraft.entity.EnumCreatureType.MONSTER,
+                bloodSurgingLand
+        );
+        net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
+                com.qiamao.blood.entity.EntityBloodHound.class,
+                5,
+                2,
+                4,
+                net.minecraft.entity.EnumCreatureType.CREATURE,
                 bloodSurgingLand
         );
     }
