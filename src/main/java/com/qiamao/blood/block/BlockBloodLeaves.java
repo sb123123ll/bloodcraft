@@ -111,29 +111,68 @@ public class BlockBloodLeaves extends Block implements IShearable {
     }
 
     /**
-     * 检查周围是否有血腥原木或原版原木
+     * 检查周围是否有血腥原木或原版原木 (使用连通性寻路探测)
      */
     private boolean shouldBreakLeaves(World worldIn, BlockPos pos) {
-        for (int i = 1; i <= 6; ++i) {
-            BlockPos blockpos = pos.up(i);
-            if (worldIn.getBlockState(blockpos).getBlock() == com.qiamao.blood.init.ModBlocks.BLOOD_LOG ||
-                worldIn.getBlockState(blockpos).getBlock() == Blocks.LOG ||
-                worldIn.getBlockState(blockpos).getBlock() == Blocks.LOG2) {
+        // 按照需求：向上8格，向下2格，四面8格
+        int rangeX = 8;
+        int rangeYUp = 8;
+        int rangeYDown = 2;
+        int rangeZ = 8;
+
+        int sizeX = rangeX * 2 + 1;
+        int sizeY = rangeYUp + rangeYDown + 1;
+        int sizeZ = rangeZ * 2 + 1;
+
+        // 3D 数组记录是否访问过，避免死循环和重复计算
+        boolean[][][] visited = new boolean[sizeX][sizeY][sizeZ];
+        
+        // 简易队列用于广度优先搜索 (BFS)
+        BlockPos[] queue = new BlockPos[sizeX * sizeY * sizeZ];
+        int head = 0;
+        int tail = 0;
+
+        queue[tail++] = pos;
+        visited[rangeX][rangeYDown][rangeZ] = true;
+
+        while (head < tail) {
+            BlockPos current = queue[head++];
+            net.minecraft.block.Block block = worldIn.getBlockState(current).getBlock();
+
+            // 1. 只要顺着树叶蔓延找到了原木，说明它仍与某棵树"物理相连"，不应腐烂
+            if (block == com.qiamao.blood.init.ModBlocks.BLOOD_LOG ||
+                block == net.minecraft.init.Blocks.LOG ||
+                block == net.minecraft.init.Blocks.LOG2) {
                 return true;
             }
-        }
 
-        for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL) {
-            for (int i = 1; i <= 4; ++i) {
-                BlockPos blockpos1 = pos.offset(enumfacing, i);
-                if (worldIn.getBlockState(blockpos1).getBlock() == com.qiamao.blood.init.ModBlocks.BLOOD_LOG ||
-                    worldIn.getBlockState(blockpos1).getBlock() == Blocks.LOG ||
-                    worldIn.getBlockState(blockpos1).getBlock() == Blocks.LOG2) {
-                    return true;
+            // 2. 如果当前方块是起始树叶或相连的树叶，则继续向它周围 6 个方向扩散寻找
+            if (current.equals(pos) || block == this) {
+                for (net.minecraft.util.EnumFacing facing : net.minecraft.util.EnumFacing.values()) {
+                    int nx = current.getX() + facing.getFrontOffsetX();
+                    int ny = current.getY() + facing.getFrontOffsetY();
+                    int nz = current.getZ() + facing.getFrontOffsetZ();
+
+                    int dx = nx - pos.getX();
+                    int dy = ny - pos.getY();
+                    int dz = nz - pos.getZ();
+
+                    // 确保扩散没有超出我们设定的边界 (上8, 下2, 四面8)
+                    if (Math.abs(dx) <= rangeX && Math.abs(dz) <= rangeZ && dy <= rangeYUp && dy >= -rangeYDown) {
+                        int arrX = dx + rangeX;
+                        int arrY = dy + rangeYDown;
+                        int arrZ = dz + rangeZ;
+
+                        if (!visited[arrX][arrY][arrZ]) {
+                            visited[arrX][arrY][arrZ] = true;
+                            queue[tail++] = new BlockPos(nx, ny, nz);
+                        }
+                    }
                 }
             }
         }
-
+        
+        // 遍历了范围内所有能连通的树叶，都没找到原木，说明被彻底砍断了
         return false;
     }
 }

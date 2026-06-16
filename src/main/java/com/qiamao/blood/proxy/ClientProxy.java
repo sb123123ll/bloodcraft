@@ -39,4 +39,9 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         }
     }
+
+    @Override
+    public void addScheduledTask(Runnable runnable) {
+        Minecraft.getMinecraft().addScheduledTask(runnable);
+    }
 }

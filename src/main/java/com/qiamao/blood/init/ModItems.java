@@ -232,8 +232,8 @@ public class ModItems {
             .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
 
     // 血腥糜烂的肉 (Gory Flesh)
-    // 8 是恢复的饥饿值 (4个鸡腿图标)，0.3F 是饱和度，true 表示是类似腐肉/狼肉，允许玩家在满饱食度时食用
-    public static final Item GORY_FLESH = new ItemFood(8, 0.3F, true) {
+    // 3 是恢复的饥饿值 (1.5个鸡腿图标)，0.3F 是饱和度，true 表示是类似腐肉/狼肉，允许玩家在满饱食度时食用
+    public static final Item GORY_FLESH = new ItemFood(3, 0.3F, true) {
 
         @Override
         protected void onFoodEaten(net.minecraft.item.ItemStack stack, World worldIn, EntityPlayer player) {
@@ -253,8 +253,8 @@ public class ModItems {
             .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
 
     // 烤熟的烂肉 (Cooked Gory Flesh)
-    // 16 是恢复的饥饿值 (8个鸡腿图标)，0.6F 是饱和度，没有负面效果
-    public static final Item COOKED_GORY_FLESH = new ItemFood(16, 0.6F, false) {
+    // 10 是恢复的饥饿值 (5个鸡腿图标)，0.6F 是饱和度，没有负面效果
+    public static final Item COOKED_GORY_FLESH = new ItemFood(10, 0.6F, false) {
         @Override
         public int getMaxItemUseDuration(net.minecraft.item.ItemStack stack) {
             // 原版吃东西默认是 32 ticks。这里重写并返回和原版一致的 32 
@@ -264,6 +264,45 @@ public class ModItems {
     }
             .setUnlocalizedName("cooked_gory_flesh")
             .setRegistryName(BloodMod.MODID, "cooked_gory_flesh")
+            .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
+
+    // 心脏 (Human Heart)
+    // 饱食度是 16 (8个鸡腿图标)，饱和度 0.9F，允许满饱食度食用
+    public static final Item HUMAN_HEART = new ItemFood(16, 0.9F, true) {
+        @Override
+        public int getMaxItemUseDuration(net.minecraft.item.ItemStack stack) {
+            return 32;
+        }
+    }
+            .setAlwaysEdible()
+            .setUnlocalizedName("human_heart")
+            .setRegistryName(BloodMod.MODID, "human_heart")
+            .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
+
+    // 熟心脏 (Cooked Human Heart)
+    // 饱食度是 16 (8个鸡腿图标)，饱和度 0.9F
+    public static final Item COOKED_HUMAN_HEART = new ItemFood(16, 0.9F, true) {
+        @Override
+        public int getMaxItemUseDuration(net.minecraft.item.ItemStack stack) {
+            return 32;
+        }
+
+        @Override
+        protected void onFoodEaten(net.minecraft.item.ItemStack stack, World worldIn, EntityPlayer player) {
+            if (!worldIn.isRemote) {
+                // 生命恢复 II (等级为 1 代表 II)，持续 5-7 秒 (100 - 140 ticks)
+                int regenDuration = 100 + worldIn.rand.nextInt(41);
+                player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, regenDuration, 1));
+                
+                // 力量 I (等级为 0 代表 I)，持续 1 分钟 (1200 ticks)
+                player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 0));
+            }
+            super.onFoodEaten(stack, worldIn, player);
+        }
+    }
+            .setAlwaysEdible()
+            .setUnlocalizedName("cooked_human_heart")
+            .setRegistryName(BloodMod.MODID, "cooked_human_heart")
             .setCreativeTab(com.qiamao.blood.BloodCreativeTab.INSTANCE);
 
     // 投掷血螨 (Thrown Blood Mite Item)
@@ -561,6 +600,8 @@ public class ModItems {
                 PLUCKED_EYE,
                 GORY_FLESH,
                 COOKED_GORY_FLESH,
+                HUMAN_HEART,
+                COOKED_HUMAN_HEART,
                 THROWN_BLOOD_MITE_ITEM,
                 PARASITIC_STEVE_FACE,
                 CENTIPEDE_STINGER,

@@ -35,13 +35,14 @@ public class ModWorldGeneration implements IWorldGenerator {
 
         // 使用区块位置作为种子的基础，确保每个区域的选择是确定性的
         // 这种方法类似于原版村庄/神庙的生成逻辑，通过将坐标划分为更大的网格来避免冲突
-        int gridX = chunkX >> 4; // 每 16x16 个区块为一个大网格单元
-        int gridZ = chunkZ >> 4;
+        // 网格大小设为 14x14
+        int gridX = chunkX / 14; // 每 14x14 个区块为一个大网格单元
+        int gridZ = chunkZ / 14;
         Random gridRandom = new Random(world.getSeed() + (long)gridX * 31278612L + (long)gridZ * 43981247L);
         
         // 每个网格单元只选择一个位置尝试生成结构
-        int selectedChunkX = (gridX << 4) + gridRandom.nextInt(12); 
-        int selectedChunkZ = (gridZ << 4) + gridRandom.nextInt(12);
+        int selectedChunkX = (gridX * 14) + gridRandom.nextInt(10); 
+        int selectedChunkZ = (gridZ * 14) + gridRandom.nextInt(10);
 
         // 如果当前区块正是被选中的区块，则决定生成哪一种结构
         if (chunkX == selectedChunkX && chunkZ == selectedChunkZ) {
@@ -104,8 +105,8 @@ public class ModWorldGeneration implements IWorldGenerator {
 
         // 在地下尝试生成肉块簇，覆盖矿洞、废弃矿井、海底等
         // 为了在曲折的矿洞和水下也能有更多生成，我们提高尝试次数，并扩大高度范围（包含海底）
-        if (random.nextInt(100) < 85) { // 85%的区块都会尝试生成
-            for (int i = 0; i < 8; i++) { // 增加单区块尝试次数，提高在矿洞中的命中率
+        if (random.nextInt(100) < 95) { // 95%的区块都会尝试生成
+            for (int i = 0; i < 10; i++) { // 增加单区块尝试次数，提高在矿洞中的命中率
                 int x = chunkX * 16 + 8 + random.nextInt(5);
                 // 海底一般在Y=40~60左右，矿洞可以从Y=5一直到Y=60
                 int y = 5 + random.nextInt(55); // 限制在 5 到 60 之间

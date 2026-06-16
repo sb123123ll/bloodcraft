@@ -44,8 +44,8 @@ public class BloodMod {
         // 注册 GUI Handler
         net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.registerGuiHandler(this, new com.qiamao.blood.client.gui.ModGuiHandler());
 
-        // 注册世界生成器，权重填 0 即可
-        GameRegistry.registerWorldGenerator(new ModWorldGeneration(), 0);
+        // 注册世界生成器，权重填 1
+        GameRegistry.registerWorldGenerator(new ModWorldGeneration(), 1);
 
         // 确保 ModBiomes 类被加载（触发静态初始化）
         // @Mod.EventBusSubscriber 会自动处理注册事件
@@ -101,6 +101,13 @@ public class BloodMod {
         GameRegistry.addSmelting(
             com.qiamao.blood.init.ModItems.GORY_FLESH, 
             new net.minecraft.item.ItemStack(com.qiamao.blood.init.ModItems.COOKED_GORY_FLESH), 
+            0.35F // 经验值，和原版烤肉一样
+        );
+
+        // 注册熔炉配方：将心脏煮熟
+        GameRegistry.addSmelting(
+            com.qiamao.blood.init.ModItems.HUMAN_HEART, 
+            new net.minecraft.item.ItemStack(com.qiamao.blood.init.ModItems.COOKED_HUMAN_HEART), 
             0.35F // 经验值，和原版烤肉一样
         );
 
@@ -167,21 +174,21 @@ public class BloodMod {
         // 沙漠血螨脑控额外: 1
 
         // 双管齐下，直接用原版的 MONSTER 和 CREATURE 类型：
-        // 1. 注册为 MONSTER：权重 7，主要负责在洞穴中持续不断地刷新
+        // 1. 注册为 MONSTER：权重 8，主要负责在洞穴中持续不断地刷新
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityBloodSeeker.class, 
-                7, 
+                8, 
                 3, 
                 4, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
                 spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
 
-        // 2. 注册为 CREATURE（动物类）：权重 7
+        // 2. 注册为 CREATURE（动物类）：权重 8
         // 关键点：动物类会在【区块第一次生成时】以及【白天光照充足时】强制尝试生成！
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityBloodSeeker.class, 
-                7, 
+                8, 
                 3, 
                 4, 
                 net.minecraft.entity.EnumCreatureType.CREATURE, 
@@ -189,7 +196,7 @@ public class BloodMod {
         );
 
         // --- 血液猎犬生成 (Blood Hound) ---
-        // 权重6。每次2-4只。不在干燥和寒冷群系生成。
+        // 权重7。每次2-4只。不在干燥和寒冷群系生成。
         java.util.List<net.minecraft.world.biome.Biome> houndBiomes = new java.util.ArrayList<>();
         for (net.minecraft.world.biome.Biome biome : spawnBiomes) {
             if (!net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.SANDY) &&
@@ -202,7 +209,7 @@ public class BloodMod {
         // 注册为 MONSTER (晚上)
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityBloodHound.class, 
-                6, 
+                7, 
                 2, 
                 4, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -211,7 +218,7 @@ public class BloodMod {
         // 注册为 CREATURE (白天)
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityBloodHound.class, 
-                6, 
+                7, 
                 2, 
                 4, 
                 net.minecraft.entity.EnumCreatureType.CREATURE, 
@@ -219,17 +226,17 @@ public class BloodMod {
         );
 
         // --- 视神经生成 (Optic Nerve) ---
-        // 主世界晚上: 权重6
+        // 主世界晚上: 权重7
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityOpticNerve.class, 
-                6, 
+                7, 
                 1, 
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
                 spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
 
-        // 森林群系额外权重: 权重6
+        // 森林群系额外权重: 权重7
         // 找出所有森林群系
         java.util.List<net.minecraft.world.biome.Biome> forestBiomes = new java.util.ArrayList<>();
         for (net.minecraft.world.biome.Biome biome : spawnBiomes) {
@@ -239,7 +246,7 @@ public class BloodMod {
         }
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityOpticNerve.class, 
-                6, 
+                7, 
                 1, 
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -255,7 +262,7 @@ public class BloodMod {
         }
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityOpticNerve.class, 
-                6, 
+                7, 
                 1, 
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -263,10 +270,10 @@ public class BloodMod {
         );
 
         // --- 寄生史蒂夫生成 (普通群系) ---
-        // 单只生成
+        // 单只生成，权重 8
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityParasiticSteve.class, 
-                7, 
+                8, 
                 1, 
                 1, // 单只生成
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -277,7 +284,7 @@ public class BloodMod {
         // 沙漠群系额外权重按比例调整
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityParasiticSteve.class, 
-                1, 
+                2, 
                 1, 
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -286,23 +293,23 @@ public class BloodMod {
 
         // --- 血液翻腾之地群系特殊生成（按比例调整） ---
         // 注：血螨不自然生成（由投掷产生），保持原有逻辑
-        // 多足嗜血虫 MONSTER: 14
-        // 多足嗜血虫 CREATURE: 14
-        // 血螨脑控 MONSTER: 14
+        // 多足嗜血虫 MONSTER: 15
+        // 多足嗜血虫 CREATURE: 15
+        // 血螨脑控 MONSTER: 15
 
         net.minecraft.world.biome.Biome bloodSurgingLand = com.qiamao.blood.init.ModBiomes.BLOOD_SURGING_LAND;
 
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityParasiticSteve.class,
-                14,
+                15,
                 1,
                 1,
                 net.minecraft.entity.EnumCreatureType.MONSTER,
                 bloodSurgingLand
         );
 
-        // 血液猎犬在血液翻腾之地的总权重设为 11
-        // 因为外界基础权重是 6，所以这里额外追加 5
+        // 血液猎犬在血液翻腾之地的总权重设为 12
+        // 因为外界基础权重是 7，所以这里额外追加 5
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityBloodHound.class,
                 5,

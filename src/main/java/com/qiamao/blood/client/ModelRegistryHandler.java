@@ -176,6 +176,20 @@ public class ModelRegistryHandler {
                 new ModelResourceLocation(ModItems.COOKED_GORY_FLESH.getRegistryName(), "inventory")
         );
 
+        // 为 human_heart 注册模型资源位置
+        ModelLoader.setCustomModelResourceLocation(
+                ModItems.HUMAN_HEART,
+                0,
+                new ModelResourceLocation(ModItems.HUMAN_HEART.getRegistryName(), "inventory")
+        );
+
+        // 为 cooked_human_heart 注册模型资源位置
+        ModelLoader.setCustomModelResourceLocation(
+                ModItems.COOKED_HUMAN_HEART,
+                0,
+                new ModelResourceLocation(ModItems.COOKED_HUMAN_HEART.getRegistryName(), "inventory")
+        );
+
         // 为 thrown_blood_mite_item 注册模型资源位置
         ModelLoader.setCustomModelResourceLocation(
                 ModItems.THROWN_BLOOD_MITE_ITEM,

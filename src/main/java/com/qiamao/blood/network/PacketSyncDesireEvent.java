@@ -39,21 +39,15 @@ public class PacketSyncDesireEvent implements IMessage {
 
     public static class Handler implements IMessageHandler<PacketSyncDesireEvent, IMessage> {
         @Override
-        @SideOnly(Side.CLIENT)
         public IMessage onMessage(PacketSyncDesireEvent message, MessageContext ctx) {
             if (message == null) {
                 LOGGER.warn("收到空的欲望事件同步包，已忽略");
                 return null;
             }
-            final Minecraft minecraft = Minecraft.getMinecraft();
-            if (minecraft == null) {
-                LOGGER.warn("Minecraft 客户端实例为空，欲望事件状态同步已跳过");
-                return null;
-            }
-            // 在客户端线程中安全处理，避免网络线程直接改客户端状态。
-            minecraft.addScheduledTask(() -> {
+            // 使用 Proxy 来安全地调度客户端任务，防止服务端加载类时因为找不到 Minecraft 类而崩溃
+            com.qiamao.blood.BloodMod.proxy.addScheduledTask(() -> {
                 try {
-                    DesireEventHandler.setClientEventActive(message.active);
+                    com.qiamao.blood.event.DesireEventHandler.setClientEventActive(message.active);
                 } catch (RuntimeException e) {
                     LOGGER.error("处理欲望事件客户端同步失败", e);
                 }

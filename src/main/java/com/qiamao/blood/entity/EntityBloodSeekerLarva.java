@@ -137,11 +137,22 @@ public class EntityBloodSeekerLarva extends EntityCreature {
         
         boolean isBurning = this.isBurning();
         
-        for (int i = 0; i < count; ++i) {
-            if (isBurning) {
-                this.dropItem(ModItems.COOKED_GORY_FLESH, 1);
+        if (count > 0) {
+            // 30%概率掉落心脏，且不再掉落烂肉
+            if (this.rand.nextFloat() < 0.3F) {
+                if (isBurning) {
+                    this.dropItem(com.qiamao.blood.init.ModItems.COOKED_HUMAN_HEART, 1);
+                } else {
+                    this.dropItem(com.qiamao.blood.init.ModItems.HUMAN_HEART, 1);
+                }
             } else {
-                this.dropItem(ModItems.GORY_FLESH, 1);
+                for (int i = 0; i < count; ++i) {
+                    if (isBurning) {
+                        this.dropItem(com.qiamao.blood.init.ModItems.COOKED_GORY_FLESH, 1);
+                    } else {
+                        this.dropItem(com.qiamao.blood.init.ModItems.GORY_FLESH, 1);
+                    }
+                }
             }
         }
 

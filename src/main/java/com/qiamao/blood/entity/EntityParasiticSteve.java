@@ -227,11 +227,21 @@ public class EntityParasiticSteve extends EntityMob {
         // 检查是否着火：着火掉熟烂肉，否则掉生的
         boolean isBurning = this.isBurning();
 
-        for (int i = 0; i < fleshCount; ++i) {
-            if (isBurning) {
-                this.dropItem(com.qiamao.blood.init.ModItems.COOKED_GORY_FLESH, 1);
+        if (fleshCount > 0) {
+            if (this.rand.nextFloat() < 0.3F) {
+                if (isBurning) {
+                    this.dropItem(com.qiamao.blood.init.ModItems.COOKED_HUMAN_HEART, 1);
+                } else {
+                    this.dropItem(com.qiamao.blood.init.ModItems.HUMAN_HEART, 1);
+                }
             } else {
-                this.dropItem(com.qiamao.blood.init.ModItems.GORY_FLESH, 1);
+                for (int i = 0; i < fleshCount; ++i) {
+                    if (isBurning) {
+                        this.dropItem(com.qiamao.blood.init.ModItems.COOKED_GORY_FLESH, 1);
+                    } else {
+                        this.dropItem(com.qiamao.blood.init.ModItems.GORY_FLESH, 1);
+                    }
+                }
             }
         }
     }

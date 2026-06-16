@@ -54,11 +54,25 @@ public class EntityBloodHound extends EntityWolf {
     @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
         int count = this.rand.nextInt(3); // 0-2个烂肉
-        for (int i = 0; i < count; ++i) {
-            if (this.isBurning()) {
-                this.dropItem(com.qiamao.blood.init.ModItems.COOKED_GORY_FLESH, 1);
+        if (lootingModifier > 0) {
+            count += this.rand.nextInt(lootingModifier + 1);
+        }
+
+        if (count > 0) {
+            if (this.rand.nextFloat() < 0.3F) {
+                if (this.isBurning()) {
+                    this.dropItem(com.qiamao.blood.init.ModItems.COOKED_HUMAN_HEART, 1);
+                } else {
+                    this.dropItem(com.qiamao.blood.init.ModItems.HUMAN_HEART, 1);
+                }
             } else {
-                this.dropItem(com.qiamao.blood.init.ModItems.GORY_FLESH, 1);
+                for (int i = 0; i < count; ++i) {
+                    if (this.isBurning()) {
+                        this.dropItem(com.qiamao.blood.init.ModItems.COOKED_GORY_FLESH, 1);
+                    } else {
+                        this.dropItem(com.qiamao.blood.init.ModItems.GORY_FLESH, 1);
+                    }
+                }
             }
         }
     }
