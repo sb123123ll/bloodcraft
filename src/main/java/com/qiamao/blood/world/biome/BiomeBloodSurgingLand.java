@@ -1,9 +1,16 @@
 package com.qiamao.blood.world.biome;
 
+import com.qiamao.blood.block.BlockFleshChunk;
 import com.qiamao.blood.init.ModBlocks;
 import com.qiamao.blood.world.WorldGenBloodTree;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,12 +21,17 @@ import java.util.Random;
 /**
  * 血液翻腾之地生物群系
  * 地面由血块组成，充满血液的河流和湖泊
+ * 地形生成时肉块覆盖深度加倍，确保斜坡侧面不裸露石头
  */
 public class BiomeBloodSurgingLand extends Biome {
 
     // 血腥树木生成器
     private static final WorldGenAbstractTree BLOOD_TREE = new WorldGenBloodTree(false);
     private static final WorldGenAbstractTree BIG_BLOOD_TREE = new com.qiamao.blood.world.WorldGenBigBloodTree(false);
+    
+    // 底部基岩和深层的原版石头
+    private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
+    private static final IBlockState STONE = Blocks.STONE.getDefaultState();
 
     public BiomeBloodSurgingLand() {
         super(new BiomeProperties("blood_surging_land")
@@ -60,21 +72,58 @@ public class BiomeBloodSurgingLand extends Biome {
     }
 
     /**
-     * 重写地形生成逻辑，实现地表方块随机朝向
+     * 重写地形生成逻辑，大幅增加表层肉块覆盖深度
+     * 原版使用 noiseVal/3+3 作为表层深度，斜坡侧面容易裸露石头
+     * 这里使用 noiseVal/3+8+rand*3，表层肉块深度约为原来的2-3倍
+     * 同时保留水平随机朝向逻辑
      */
     @Override
     @SuppressWarnings("null")
-    public void genTerrainBlocks(@Nonnull net.minecraft.world.World worldIn, @Nonnull Random rand, @Nonnull net.minecraft.world.chunk.ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal) {
-        // 在生成每一列方块（x, z 坐标）之前，随机设置 topBlock 和 fillerBlock 的水平朝向
-        // 这样可以确保地表的肉块（Flesh Chunk）在水平方向上随机旋转，看起来更自然
-        net.minecraft.util.EnumFacing topFacing = net.minecraft.util.EnumFacing.Plane.HORIZONTAL.random(rand);
-        net.minecraft.util.EnumFacing fillerFacing = net.minecraft.util.EnumFacing.Plane.HORIZONTAL.random(rand);
+    public void genTerrainBlocks(@Nonnull World worldIn, @Nonnull Random rand, @Nonnull ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal) {
+        int seaLevel = worldIn.getSeaLevel();
+        int chunkX = x & 15;
+        int chunkZ = z & 15;
 
-        this.topBlock = ModBlocks.FLESH_CHUNK.getDefaultState().withProperty(com.qiamao.blood.block.BlockFleshChunk.FACING, topFacing);
-        this.fillerBlock = ModBlocks.FLESH_CHUNK.getDefaultState().withProperty(com.qiamao.blood.block.BlockFleshChunk.FACING, fillerFacing);
+        // 随机朝向的肉块状态
+        EnumFacing topFacing = EnumFacing.Plane.HORIZONTAL.random(rand);
+        EnumFacing fillerFacing = EnumFacing.Plane.HORIZONTAL.random(rand);
+        IBlockState topBlockState = ModBlocks.FLESH_CHUNK.getDefaultState().withProperty(BlockFleshChunk.FACING, topFacing);
+        IBlockState fillerBlockState = ModBlocks.FLESH_CHUNK.getDefaultState().withProperty(BlockFleshChunk.FACING, fillerFacing);
 
-        // 调用父类方法执行实际的方块填充逻辑
-        super.genTerrainBlocks(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
+        // 表层深度：4-7格深（包含随机变化），覆盖斜坡侧面裸露石头的效果适度
+        int maxSurfaceDepth = 4 + rand.nextInt(4);
+
+        int surfaceDepth = -1;
+
+        for (int y = 255; y >= 0; --y) {
+            if (y <= rand.nextInt(5)) {
+                chunkPrimerIn.setBlockState(chunkX, y, chunkZ, BEDROCK);
+            } else {
+                IBlockState state = chunkPrimerIn.getBlockState(chunkX, y, chunkZ);
+                if (state.getBlock() != null && state.getMaterial() != Material.AIR) {
+                    if (state.getBlock() == Blocks.STONE) {
+                        if (surfaceDepth == -1) {
+                            // 表层起始
+                            surfaceDepth = maxSurfaceDepth;
+                            if (y >= seaLevel - 1) {
+                                chunkPrimerIn.setBlockState(chunkX, y, chunkZ, topBlockState);
+                            } else if (y < seaLevel - 1 - maxSurfaceDepth) {
+                                // 超过表层深度的下层，恢复为石头
+                                chunkPrimerIn.setBlockState(chunkX, y, chunkZ, STONE);
+                            } else {
+                                chunkPrimerIn.setBlockState(chunkX, y, chunkZ, fillerBlockState);
+                            }
+                        } else if (surfaceDepth > 0) {
+                            --surfaceDepth;
+                            chunkPrimerIn.setBlockState(chunkX, y, chunkZ, fillerBlockState);
+                        }
+                    }
+                } else {
+                    // 遇到空气（洞穴），重置表层深度计数器
+                    surfaceDepth = -1;
+                }
+            }
+        }
     }
 
     /**

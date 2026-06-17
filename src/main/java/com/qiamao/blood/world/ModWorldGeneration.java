@@ -41,45 +41,57 @@ public class ModWorldGeneration implements IWorldGenerator {
         Random gridRandom = new Random(world.getSeed() + (long)gridX * 31278612L + (long)gridZ * 43981247L);
         
         // 每个网格单元只选择一个位置尝试生成结构
-        int selectedChunkX = (gridX * 14) + gridRandom.nextInt(10); 
-        int selectedChunkZ = (gridZ * 14) + gridRandom.nextInt(10);
+        // 使用 nextInt(14) 确保整个 14x14 网格的全部位置均可被选中，避免死区
+        int selectedChunkX = (gridX * 14) + gridRandom.nextInt(14); 
+        int selectedChunkZ = (gridZ * 14) + gridRandom.nextInt(14);
 
-        // 如果当前区块正是被选中的区块，则决定生成哪一种结构
+        // 如果当前区块正是被选中的区块，则尝试生成结构
+        // 为避免因生物群系/地形检查导致频繁失败，按随机顺序尝试3种结构
+        // 只要有一种成功就停止（血巢无群系限制，兜底保证）
         if (chunkX == selectedChunkX && chunkZ == selectedChunkZ) {
-            int structureType = gridRandom.nextInt(3); // 0: 血巢, 1: 血祭坛, 2: 传教士屋
-            
-            // 为了安全，大型结构只在当前区块的 x,z=8 的中心生成
             int x = chunkX * 16 + 8;
             int z = chunkZ * 16 + 8;
 
-            if (structureType == 0) {
-                // 生成母体血巢
-                // 现在肉块已经绝对限制在区块内，我们可以安全地恢复血巢生成
-                // 但为了避免血巢本身过大，我们把它的坐标稍微往区块中心靠一靠
-                BlockPos pos = new BlockPos(x, 30, z);
-                bloodStructure.generate(world, gridRandom, pos);
-            } else if (structureType == 1) {
-                // 生成血祭坛
-                BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
-                Biome biome = world.getBiome(pos);
+            // 随机打乱尝试顺序，避免同一类型总是优先
+            int[] typeOrder = {0, 1, 2};
+            // Fisher-Yates 洗牌
+            for (int i = 2; i > 0; i--) {
+                int j = gridRandom.nextInt(i + 1);
+                int tmp = typeOrder[i];
+                typeOrder[i] = typeOrder[j];
+                typeOrder[j] = tmp;
+            }
 
-                boolean canGenerate = (biome == ModBiomes.BLOOD_SURGING_LAND) ||
-                    (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY) &&
-                     !BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD));
+            for (int structureType : typeOrder) {
+                if (structureType == 0) {
+                    // 生成母体血巢（无群系限制，y=30地下，几乎必定成功）
+                    BlockPos pos = new BlockPos(x, 30, z);
+                    if (bloodStructure.generate(world, gridRandom, pos)) {
+                        break;
+                    }
+                } else if (structureType == 1) {
+                    // 生成血祭坛
+                    BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
+                    Biome biome = world.getBiome(pos);
 
-                if (canGenerate) {
-                    bloodAltar.generate(world, gridRandom, pos);
-                }
-            } else if (structureType == 2) {
-                // 生成传教士屋
-                BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
-                Biome biome = world.getBiome(pos);
-                
-                boolean canGenerate = BiomeDictionary.hasType(biome, BiomeDictionary.Type.PLAINS) ||
-                                      BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST);
-                
-                if (canGenerate) {
-                    missionaryHouse.generate(world, gridRandom, pos);
+                    boolean canGenerate = (biome == ModBiomes.BLOOD_SURGING_LAND) ||
+                        (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY) &&
+                         !BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD));
+
+                    if (canGenerate && bloodAltar.generate(world, gridRandom, pos)) {
+                        break;
+                    }
+                } else if (structureType == 2) {
+                    // 生成传教士屋
+                    BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
+                    Biome biome = world.getBiome(pos);
+                    
+                    boolean canGenerate = BiomeDictionary.hasType(biome, BiomeDictionary.Type.PLAINS) ||
+                                          BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST);
+                    
+                    if (canGenerate && missionaryHouse.generate(world, gridRandom, pos)) {
+                        break;
+                    }
                 }
             }
         }

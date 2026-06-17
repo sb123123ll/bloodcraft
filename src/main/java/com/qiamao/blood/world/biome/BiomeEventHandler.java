@@ -116,6 +116,9 @@ public class BiomeEventHandler {
 
         // 为血块设置随机朝向
         randomizeBloodBlockFacing(world, chunkX, chunkZ);
+
+        // 覆盖斜坡侧面的裸露石头/泥土，使其与肉块地表融为一体
+        capExposedSurfaces(world, chunkX, chunkZ);
     }
 
     /**
@@ -150,6 +153,73 @@ public class BiomeEventHandler {
                         // 设置新的朝向状态
                         IBlockState newState = state.withProperty(com.qiamao.blood.block.BlockBloodBlock.FACING, randomFacing);
                         world.setBlockState(pos, newState, 2);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 覆盖斜坡侧面的裸露方块
+     * 
+     * 原理：对于血液翻腾之地群系中的每一列方块，检查其4个水平相邻列。
+     * 如果邻居列的地表比当前列高，则邻居列侧面对应于两列高度差之间的区域会暴露在外。
+     * 将这些暴露的石头/泥土/草方块替换为肉块，实现类似原版草方块覆盖斜坡的效果。
+     */
+    private static void capExposedSurfaces(World world, int chunkX, int chunkZ) {
+        int startX = chunkX * 16;
+        int startZ = chunkZ * 16;
+        Random rand = new Random(world.getSeed() + chunkX * 654187L + chunkZ * 943211L);
+
+        // 4个水平方向
+        int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                BlockPos columnPos = new BlockPos(startX + x, 64, startZ + z);
+                if (world.getBiome(columnPos) != ModBiomes.BLOOD_SURGING_LAND) {
+                    continue;
+                }
+
+                // 当前列的地表高度（最上方非空气方块的Y坐标）
+                int currentSurface = world.getHeight(startX + x, startZ + z) - 1;
+                if (currentSurface < 0) continue;
+
+                for (int[] dir : dirs) {
+                    int nx = startX + x + dir[0];
+                    int nz = startZ + z + dir[1];
+                    
+                    // 边界保护
+                    if (nx < 0 || nz < 0) continue;
+
+                    // 邻居列的地表高度
+                    int neighborSurface = world.getHeight(nx, nz) - 1;
+                    if (neighborSurface < 0) continue;
+
+                    // 只有邻居比当前列高时才需要覆盖（邻居列的侧面暴露）
+                    if (neighborSurface > currentSurface) {
+                        // 两个自然方块替换列表
+                        for (int y = currentSurface + 1; y <= neighborSurface; y++) {
+                            BlockPos sidePos = new BlockPos(nx, y, nz);
+                            IBlockState sideState = world.getBlockState(sidePos);
+                            net.minecraft.block.Block sideBlock = sideState.getBlock();
+
+                            // 替换所有原版自然方块
+                            if (sideBlock == Blocks.STONE ||
+                                sideBlock == Blocks.DIRT ||
+                                sideBlock == Blocks.GRASS ||
+                                sideBlock == Blocks.GRAVEL ||
+                                sideBlock == Blocks.SAND ||
+                                sideBlock == Blocks.SANDSTONE ||
+                                sideBlock == Blocks.COBBLESTONE ||
+                                sideBlock == Blocks.MOSSY_COBBLESTONE) {
+                                
+                                // 随机朝向，使坡面更自然
+                                EnumFacing facing = EnumFacing.Plane.HORIZONTAL.random(rand);
+                                world.setBlockState(sidePos, ModBlocks.FLESH_CHUNK.getDefaultState()
+                                    .withProperty(com.qiamao.blood.block.BlockFleshChunk.FACING, facing), 2);
+                            }
+                        }
                     }
                 }
             }

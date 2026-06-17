@@ -1,5 +1,6 @@
 package com.qiamao.blood.proxy;
 
+import com.qiamao.blood.BloodMod;
 import com.qiamao.blood.client.ModelRegistryHandler;
 import com.qiamao.blood.client.event.ClientEventHandler;
 import com.qiamao.blood.client.event.DesireSkyRenderHandler;
@@ -9,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,6 +27,14 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         MinecraftForge.EVENT_BUS.register(new DesireSkyRenderHandler());
+    }
+
+    /**
+     * 注册完整的 GUI Handler（包含客户端 GUI 实现）
+     */
+    @Override
+    public void registerGuiHandler() {
+        NetworkRegistry.INSTANCE.registerGuiHandler(BloodMod.instance, new com.qiamao.blood.client.gui.ModGuiHandler());
     }
 
     @Override

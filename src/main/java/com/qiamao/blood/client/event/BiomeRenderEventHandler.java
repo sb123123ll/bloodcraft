@@ -39,27 +39,38 @@ public class BiomeRenderEventHandler {
     private static final float RAIN_BLUE = 0.31F;
 
     /**
-     * 修改雾颜色 - 统一使用淡红色
+     * 修改雾颜色 - 根据时间平滑过渡
+     * 白天保持淡红色，夜晚随太阳亮度自然变暗，避免夜视效果
      */
     @SubscribeEvent
     public static void onFogColors(EntityViewRenderEvent.FogColors event) {
         if (!isInBloodSurgingLand()) return;
 
-        // 设置雾颜色为淡红色（与天空一致）
-        event.setRed(SKY_RED);
-        event.setGreen(SKY_GREEN);
-        event.setBlue(SKY_BLUE);
+        // 获取当前太阳亮度：0.0=午夜, 1.0=正午，用于平滑过渡
+        float sunBrightness = MC.world.getSunBrightness(1.0F);
+        // 最低保留15%亮度，夜晚仍有微弱红光，不至于完全漆黑
+        float brightness = Math.max(0.15F, sunBrightness);
+
+        // 白天保持原有淡红色，夜晚随亮度下降自然变暗
+        event.setRed(SKY_RED * brightness);
+        event.setGreen(SKY_GREEN * brightness);
+        event.setBlue(SKY_BLUE * brightness);
     }
 
     /**
-     * 修改雾密度 - 营造血腥氛围的迷雾效果
+     * 修改雾密度 - 根据时间变化营造不同氛围
+     * 白天薄雾，夜晚浓雾更显阴森
      */
     @SubscribeEvent
     public static void onFogDensity(EntityViewRenderEvent.FogDensity event) {
         if (!isInBloodSurgingLand()) return;
 
-        // 增加雾气密度，缩短视线距离营造氛围
-        event.setDensity(0.02F);
+        float sunBrightness = MC.world.getSunBrightness(1.0F);
+        // 夜晚雾更浓（0.02→0.08），平滑过渡
+        float nightFactor = 1.0F - sunBrightness;
+        float density = 0.02F + nightFactor * 0.06F;
+
+        event.setDensity(density);
         event.setCanceled(true);
     }
 

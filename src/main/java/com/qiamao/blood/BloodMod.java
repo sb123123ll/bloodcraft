@@ -41,8 +41,8 @@ public class BloodMod {
         BloodNetwork.init(); // 初始化网络通讯
         ModFluids.registerFluids();
         
-        // 注册 GUI Handler
-        net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.registerGuiHandler(this, new com.qiamao.blood.client.gui.ModGuiHandler());
+        // 通过 Proxy 注册 GUI Handler（防止服务端加载 GuiBloodAltar 等客户端类导致崩溃）
+        proxy.registerGuiHandler();
 
         // 注册世界生成器，权重填 1
         GameRegistry.registerWorldGenerator(new ModWorldGeneration(), 1);
