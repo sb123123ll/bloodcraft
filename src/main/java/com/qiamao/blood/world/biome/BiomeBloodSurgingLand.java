@@ -38,7 +38,7 @@ public class BiomeBloodSurgingLand extends Biome {
             .setTemperature(0.85F)
             .setRainfall(0.85F)
             .setBaseHeight(0.255F)
-            .setHeightVariation(0.13F)
+            .setHeightVariation(0.25F)
             .setWaterColor(0x8B0000));  // 深红色，与血液一致
 
         // 设置顶部和填充方块为肉块
