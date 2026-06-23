@@ -106,6 +106,10 @@ item.monster_bone_skeleton.name=怪物躯骨
 item.sting_core.name=毒刺核心
 item.sting_core_fragment.name=毒刺核心碎片
 item.blood_core.name=血液核心
+
+# 物品介绍
+tooltip.blood.human_heart.fresh=新鲜的
+tooltip.blood.monster_bone_axe.bone_union=骸骨结合
 tile.blood_altar.name=血液祭坛
 tile.blood_tempering_altar.name=血液淬炼台
 

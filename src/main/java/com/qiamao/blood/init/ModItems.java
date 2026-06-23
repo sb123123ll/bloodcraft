@@ -273,6 +273,11 @@ public class ModItems {
         public int getMaxItemUseDuration(net.minecraft.item.ItemStack stack) {
             return 32;
         }
+
+        @Override
+        public void addInformation(net.minecraft.item.ItemStack stack, net.minecraft.world.World worldIn, java.util.List<String> tooltip, net.minecraft.client.util.ITooltipFlag flagIn) {
+            tooltip.add(net.minecraft.util.text.TextFormatting.GRAY + net.minecraft.client.resources.I18n.format("tooltip.blood.human_heart.fresh"));
+        }
     }
             .setAlwaysEdible()
             .setUnlocalizedName("human_heart")
@@ -489,6 +494,11 @@ public class ModItems {
                 multimap.put(net.minecraft.entity.SharedMonsterAttributes.ATTACK_SPEED.getName(), new net.minecraft.entity.ai.attributes.AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.0D, 0));
             }
             return multimap;
+        }
+
+        @Override
+        public void addInformation(net.minecraft.item.ItemStack stack, net.minecraft.world.World worldIn, java.util.List<String> tooltip, net.minecraft.client.util.ITooltipFlag flagIn) {
+            tooltip.add(net.minecraft.util.text.TextFormatting.GRAY + net.minecraft.client.resources.I18n.format("tooltip.blood.monster_bone_axe.bone_union"));
         }
     }
             .setUnlocalizedName("monster_bone_axe")
