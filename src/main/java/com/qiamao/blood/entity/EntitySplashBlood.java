@@ -112,25 +112,7 @@ public class EntitySplashBlood extends EntityThrowable {
                         }
 
                         // Apply base effects
-                        entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, (int)(5 * 20 * multiplier), 0));
-                        int nauseaDuration = (8 + this.world.rand.nextInt(8)) * 20;
-                        entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, (int)(nauseaDuration * multiplier), 0));
-
-                        if (this.world.rand.nextFloat() < 0.50F) {
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.WITHER, (int)(8 * 60 * 20 * multiplier), 4));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, (int)(2 * 60 * 20 * multiplier), 1));
-                            int slownessDuration = (10 + this.world.rand.nextInt(11)) * 20;
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, (int)(slownessDuration * multiplier), 0));
-                        } else {
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, (int)(25 * 20 * multiplier), 0));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, (int)(25 * 20 * multiplier), 1));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.HASTE, (int)(2 * 60 * 20 * multiplier), 0));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.SPEED, (int)(50 * 20 * multiplier), 0));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, (int)(20 * 20 * multiplier), 0));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, (int)(60 * 20 * multiplier), 1));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, (int)(60 * 20 * multiplier), 0));
-                            entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 0));
-                        }
+                        entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, (int)(5 * 20 * multiplier), 0));
                     }
                 }
             }
@@ -153,25 +135,7 @@ public class EntitySplashBlood extends EntityThrowable {
         cloud.setColor(0x8a0303); // Red color
 
         // Add base effects
-        cloud.addEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * 20, 0));
-        int nauseaDuration = (8 + this.world.rand.nextInt(8)) * 20;
-        cloud.addEffect(new PotionEffect(MobEffects.NAUSEA, nauseaDuration, 0));
-
-        if (this.world.rand.nextFloat() < 0.50F) {
-            cloud.addEffect(new PotionEffect(MobEffects.WITHER, 8 * 60 * 20, 4));
-            cloud.addEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * 60 * 20, 1));
-            int slownessDuration = (10 + this.world.rand.nextInt(11)) * 20;
-            cloud.addEffect(new PotionEffect(MobEffects.SLOWNESS, slownessDuration, 0));
-        } else {
-            cloud.addEffect(new PotionEffect(MobEffects.REGENERATION, 25 * 20, 0));
-            cloud.addEffect(new PotionEffect(MobEffects.RESISTANCE, 25 * 20, 1));
-            cloud.addEffect(new PotionEffect(MobEffects.HASTE, 2 * 60 * 20, 0));
-            cloud.addEffect(new PotionEffect(MobEffects.SPEED, 50 * 20, 0));
-            cloud.addEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20 * 20, 0));
-            cloud.addEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 60 * 20, 1));
-            cloud.addEffect(new PotionEffect(MobEffects.STRENGTH, 60 * 20, 0));
-            cloud.addEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 0));
-        }
+        cloud.addEffect(new PotionEffect(MobEffects.NAUSEA, 5 * 20, 0));
 
         this.world.spawnEntity(cloud);
         

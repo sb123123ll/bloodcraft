@@ -416,4 +416,52 @@ public class BiomeEventHandler {
             event.setCanceled(true);
         }
     }
+
+    /**
+     * 实体更新事件 - 处理受诅咒的肉块的负面效果
+     * 踩在上方持续获得凋零1和反胃，离开马上消失，1格高低差不断续
+     */
+    @SubscribeEvent
+    public static void onLivingUpdate(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent event) {
+        net.minecraft.entity.EntityLivingBase entity = event.getEntityLiving();
+        World world = entity.world;
+        if (world.isRemote) return;
+
+        // 如果是本模组的生物，免疫这个肉块的负面效果
+        if (entity.getClass().getName().startsWith("com.qiamao.blood.entity")) {
+            return;
+        }
+
+        boolean onFlesh = false;
+        
+        // 检查脚下的方块（取碰撞箱底部向下 0.1 格的位置）
+        BlockPos posUnder = new BlockPos(
+                net.minecraft.util.math.MathHelper.floor(entity.posX),
+                net.minecraft.util.math.MathHelper.floor(entity.getEntityBoundingBox().minY - 0.1D),
+                net.minecraft.util.math.MathHelper.floor(entity.posZ)
+        );
+        
+        if (world.getBlockState(posUnder).getBlock() == ModBlocks.BLOOD_SEEKER_FLESH) {
+            onFlesh = true;
+        }
+
+        if (onFlesh) {
+            // 给予凋零 1 (amplifier 0) 和 反胃，持续 30 ticks (1.5秒)
+            // 这样玩家跳跃到高 1 格的肉块时，在空中的 10-15 tick 期间，效果不会断掉
+            entity.addPotionEffect(new net.minecraft.potion.PotionEffect(net.minecraft.init.MobEffects.WITHER, 30, 0, false, false));
+            entity.addPotionEffect(new net.minecraft.potion.PotionEffect(net.minecraft.init.MobEffects.NAUSEA, 30, 0, false, false));
+        } else if (entity.onGround) {
+            // 如果玩家落地，但脚下不是受诅咒的肉块，立即清除这俩效果
+            // （前提是效果剩余时间极短，说明是我们刚刚赋予的缓冲，而不是玩家喝药得来的长时间效果）
+            net.minecraft.potion.PotionEffect wither = entity.getActivePotionEffect(net.minecraft.init.MobEffects.WITHER);
+            if (wither != null && wither.getDuration() <= 30) {
+                entity.removePotionEffect(net.minecraft.init.MobEffects.WITHER);
+            }
+            
+            net.minecraft.potion.PotionEffect nausea = entity.getActivePotionEffect(net.minecraft.init.MobEffects.NAUSEA);
+            if (nausea != null && nausea.getDuration() <= 30) {
+                entity.removePotionEffect(net.minecraft.init.MobEffects.NAUSEA);
+            }
+        }
+    }
 }

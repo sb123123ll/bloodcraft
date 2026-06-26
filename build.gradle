@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "0.0.29a"
+version = "0.0.30a"
 group = 'com.qiamao.blood' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'bloodcraft'
 

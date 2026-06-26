@@ -174,6 +174,11 @@ public class EntityBloodMother extends EntityMob {
         if (entity instanceof net.minecraft.entity.player.EntityPlayerMP) {
             net.minecraft.entity.player.EntityPlayerMP player = (net.minecraft.entity.player.EntityPlayerMP) entity;
             player.addStat(net.minecraft.stats.StatList.MOB_KILLS, 1);
+            
+            // 玩家击杀血液母体，触发肉块地形生成
+            if (!this.world.isRemote) {
+                generateFleshTerrain(this.world, new net.minecraft.util.math.BlockPos(this));
+            }
         }
 
         if (!this.world.isRemote) {
@@ -182,6 +187,66 @@ public class EntityBloodMother extends EntityMob {
             // 8% 概率掉落血液核心
             if (this.rand.nextFloat() < 0.08F) {
                 this.dropItem(com.qiamao.blood.init.ModItems.BLOOD_CORE, 1);
+            }
+        }
+    }
+
+    /**
+     * 在母体死亡位置生成散射状肉块地形
+     */
+    private void generateFleshTerrain(World world, net.minecraft.util.math.BlockPos center) {
+        int radius = 3; // 6x6范围大约就是半径3
+        java.util.Random random = this.rand;
+        
+        net.minecraft.block.state.IBlockState fleshState = com.qiamao.blood.init.ModBlocks.FLESH_CHUNK.getDefaultState();
+        net.minecraft.block.state.IBlockState cursedFleshState = com.qiamao.blood.init.ModBlocks.BLOOD_SEEKER_FLESH.getDefaultState();
+        net.minecraft.util.EnumFacing[] horizontals = net.minecraft.util.EnumFacing.Plane.HORIZONTAL.facings();
+        
+        // 遍历 6x6x6 立方体区域（允许一定高度差的地面）
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                // 不规则散射：越靠近边缘概率越低
+                double distSq = x * x + z * z;
+                if (distSq > radius * radius) continue; // 裁掉四个角，形成近似圆形的散射
+                
+                // 距离中心越远，生成肉块的概率越低
+                double spawnChance = 1.0 - (Math.sqrt(distSq) / (radius + 1.0));
+                // 给概率加上一些随机抖动，使其看起来更破碎、散射
+                spawnChance += (random.nextDouble() - 0.5) * 0.4;
+                
+                if (spawnChance > 0.2) {
+                    // 寻找该 (x, z) 坐标最高处的固体方块（用于贴地生成）
+                    net.minecraft.util.math.BlockPos targetCol = center.add(x, 0, z);
+                    net.minecraft.util.math.BlockPos topBlock = world.getTopSolidOrLiquidBlock(targetCol).down(); // getTopSolidOrLiquidBlock 获取的是顶层方块的上方空气格
+                    
+                    // 确保不会离中心过远的高度差
+                    if (Math.abs(topBlock.getY() - center.getY()) < 5) {
+                        net.minecraft.util.EnumFacing randomFacing = horizontals[random.nextInt(horizontals.length)];
+                        
+                        // 中心区域（距离平方<=2）生成山峰形突起，高1-2格
+                        if (distSq <= 2) {
+                            int height = 1 + random.nextInt(2); // 1 或 2
+                            // 先铺设底部普通肉块
+                            for (int h = 0; h < height; h++) {
+                                net.minecraft.util.math.BlockPos buildPos = topBlock.up(h + 1);
+                                world.setBlockState(buildPos, fleshState.withProperty(com.qiamao.blood.block.BlockFleshChunk.FACING, horizontals[random.nextInt(horizontals.length)]), 3);
+                            }
+                            // 顶部固定为受诅咒的肉块
+                            net.minecraft.util.math.BlockPos cursedPos = topBlock.up(height + 1);
+                            world.setBlockState(cursedPos, cursedFleshState.withProperty(com.qiamao.blood.block.BlockBloodSeekerFlesh.FACING, randomFacing), 3);
+                        } else {
+                            // 非中心区域，只替换表层方块为普通肉块（或者直接放置在表面）
+                            // 优先替换软地表，如果是硬方块则考虑在其上铺设
+                            net.minecraft.block.state.IBlockState targetState = world.getBlockState(topBlock);
+                            if (targetState.getMaterial().isReplaceable() || targetState.getBlock().isLeaves(targetState, world, topBlock)) {
+                                world.setBlockState(topBlock, fleshState.withProperty(com.qiamao.blood.block.BlockFleshChunk.FACING, randomFacing), 3);
+                            } else {
+                                // 替换地表层
+                                world.setBlockState(topBlock, fleshState.withProperty(com.qiamao.blood.block.BlockFleshChunk.FACING, randomFacing), 3);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

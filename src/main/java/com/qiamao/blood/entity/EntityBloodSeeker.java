@@ -193,9 +193,10 @@ public class EntityBloodSeeker extends EntityMob implements IRangedAttackMob {
         });
         // 目标 AI：主动攻击玩家、村民、动物、铁傀儡
         this.targetTasks.addTask(2, new AITargetUnderShade<>(this, EntityPlayer.class));
-        this.targetTasks.addTask(3, new AITargetUnderShade<>(this, EntityVillager.class));
-        this.targetTasks.addTask(4, new AITargetUnderShade<>(this, EntityAnimal.class));
-        this.targetTasks.addTask(5, new AITargetUnderShade<>(this, net.minecraft.entity.monster.EntityIronGolem.class));
+        this.targetTasks.addTask(3, new AITargetUnderShade<>(this, EntityApproacher.class));
+        this.targetTasks.addTask(4, new AITargetUnderShade<>(this, EntityVillager.class));
+        this.targetTasks.addTask(5, new AITargetUnderShade<>(this, EntityAnimal.class));
+        this.targetTasks.addTask(6, new AITargetUnderShade<>(this, net.minecraft.entity.monster.EntityIronGolem.class));
     }
 
     /**

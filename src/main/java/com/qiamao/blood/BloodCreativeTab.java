@@ -140,6 +140,15 @@ public class BloodCreativeTab extends CreativeTabs {
         spawnEggHound.setTagCompound(nbtHound);
         spawnEggs.add(spawnEggHound);
 
+        // 8. 迫近者 刷怪蛋
+        ItemStack spawnEggApproacher = new ItemStack(Items.SPAWN_EGG);
+        NBTTagCompound nbtApproacher = new NBTTagCompound();
+        NBTTagCompound entityTagApproacher = new NBTTagCompound();
+        entityTagApproacher.setString("id", BloodMod.MODID + ":approacher");
+        nbtApproacher.setTag("EntityTag", entityTagApproacher);
+        spawnEggApproacher.setTagCompound(nbtApproacher);
+        spawnEggs.add(spawnEggApproacher);
+
         // 按分类顺序添加到最终列表中
         p_78018_1_.addAll(blocks);
         p_78018_1_.addAll(weapons);

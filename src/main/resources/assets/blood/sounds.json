@@ -198,23 +198,11 @@
       "blood:event/desire"
     ]
   },
-  "entity.optic_nerve.ambient": {
-    "category": "hostile",
-    "subtitle": "subtitles.entity.optic_nerve.ambient",
-    "sounds": [
-      "blood:entity/optic_nerve/ambient"
-    ]
-  },
   "entity.optic_nerve.target": {
     "category": "hostile",
     "subtitle": "subtitles.entity.optic_nerve.target",
     "sounds": [
-      "blood:entity/optic_nerve/target_1",
-      "blood:entity/optic_nerve/target_2",
-      "blood:entity/optic_nerve/target_3",
-      "blood:entity/optic_nerve/target_4",
-      "blood:entity/optic_nerve/target_5",
-      "blood:entity/optic_nerve/target_6"
+      "blood:entity/optic_nerve/target_1"
     ]
   },
   "entity.optic_nerve.step": {
@@ -229,6 +217,16 @@
     "subtitle": "subtitles.item.venomous_stinger_staff.shoot",
     "sounds": [
       "blood:item/venomous_stinger_staff/shoot"
+    ]
+  },
+  "entity.approacher.ambient": {
+    "category": "hostile",
+    "subtitle": "subtitles.entity.approacher.ambient",
+    "sounds": [
+      "blood:entity/approacher/ambient1",
+      "blood:entity/approacher/ambient2",
+      "blood:entity/approacher/ambient3",
+      "blood:entity/approacher/ambient4"
     ]
   }
 }

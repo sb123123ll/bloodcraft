@@ -19,7 +19,7 @@ public class BlockBloodSeekerFlesh extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockBloodSeekerFlesh(String name) {
-        super(Material.SPONGE);
+        super(Material.ROCK);
         // 默认状态设为朝北
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setRegistryName(com.qiamao.blood.BloodMod.MODID, name);
@@ -135,80 +135,6 @@ public class BlockBloodSeekerFlesh extends Block {
      */
     @Override
     public boolean onBlockActivated(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull net.minecraft.entity.player.EntityPlayer playerIn, @Nonnull net.minecraft.util.EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
-        net.minecraft.item.ItemStack heldItem = playerIn.getHeldItem(hand);
-
-        // 防御性检查：如果手持物品为空，不处理
-        if (heldItem.isEmpty()) {
-            return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
-        }
-
-        // 如果玩家手里拿着原版的空玻璃瓶
-        if (heldItem.getItem() == net.minecraft.init.Items.GLASS_BOTTLE) {
-            if (!worldIn.isRemote) {
-                // 消耗一个玻璃瓶
-                if (!playerIn.capabilities.isCreativeMode) {
-                    heldItem.shrink(1);
-                }
-
-                // 给玩家一瓶血液
-                net.minecraft.item.ItemStack bloodBottle = new net.minecraft.item.ItemStack(com.qiamao.blood.init.ModItems.BLOOD_BOTTLE);
-                if (heldItem.isEmpty()) {
-                    playerIn.setHeldItem(hand, bloodBottle);
-                } else if (!playerIn.inventory.addItemStackToInventory(bloodBottle)) {
-                    playerIn.dropItem(bloodBottle, false);
-                }
-
-                // 播放方块碎裂粒子效果
-                // 2001 是原版破坏方块产生粒子的事件 ID，Block.getStateId() 用来指定使用哪种方块的粒子
-                worldIn.playEvent(2001, pos, Block.getStateId(state));
-
-                // 获取当前渝血者肉块的朝向
-                EnumFacing fleshFacing = state.getValue(FACING);
-
-                // 将当前方块替换为原版的骷髅头方块 (Skeleton Skull)
-                // 骷髅头的 FACING 属性：UP 表示放在地上（会有额外的旋转元数据），水平方向表示贴在墙上。
-                // 渝血者肉块的 FACING 也是水平方向（东南西北）。
-                // 为了让地上的骷髅头也能朝向正确的方向，我们需要在设置 BlockState 之后，修改其 TileEntity 的旋转角度。
-                worldIn.setBlockState(pos, net.minecraft.init.Blocks.SKULL.getDefaultState().withProperty(net.minecraft.block.BlockSkull.FACING, net.minecraft.util.EnumFacing.UP), 3);
-                
-                // 设置 TileEntity 为普通骷髅头并同步旋转角度
-                net.minecraft.tileentity.TileEntity tileentity = worldIn.getTileEntity(pos);
-                if (tileentity instanceof net.minecraft.tileentity.TileEntitySkull) {
-                    net.minecraft.tileentity.TileEntitySkull skullTe = (net.minecraft.tileentity.TileEntitySkull) tileentity;
-                    skullTe.setType(0); // 0 代表普通的骨头骷髅
-                    
-                    // 将 EnumFacing (东南西北) 转换为骷髅头的旋转值 (0-15)
-                    // 修正朝向：刚才的方向是反的，骷髅头 0 对应南（面朝北），8 对应北（面朝南）。
-                    // 我们将旋转值翻转 180 度（+8 或 -8）来让它正面朝向我们原本预期的方向。
-                    int rotation = 0;
-                    switch (fleshFacing) {
-                        case NORTH: rotation = 0; break; // 修正后：面朝北
-                        case SOUTH: rotation = 8; break; // 修正后：面朝南
-                        case WEST:  rotation = 12; break; // 修正后：面朝西
-                        case EAST:  rotation = 4; break; // 修正后：面朝东
-                        default: rotation = 0; break;
-                    }
-                    skullTe.setSkullRotation(rotation);
-                }
-
-                // 播放专属的采血音效（血肉被挤压、抽取的恐怖声）
-                worldIn.playSound(null, pos, com.qiamao.blood.init.ModSounds.BLOOD_SEEKER_EXTRACT, net.minecraft.util.SoundCategory.BLOCKS, 1.0F, 0.9F + worldIn.rand.nextFloat() * 0.2F);
-
-                // 100% 的概率生成 3-4 只血螨
-                int miteCount = 3 + worldIn.rand.nextInt(2); // 生成 3 或 4 只 (3 + [0,1])
-                for (int i = 0; i < miteCount; i++) {
-                    com.qiamao.blood.entity.EntityBloodEndermite mite = new com.qiamao.blood.entity.EntityBloodEndermite(worldIn);
-                    // 在方块中心稍微偏上的位置生成，增加随机偏移避免重叠
-                    double spawnX = pos.getX() + 0.5D + (worldIn.rand.nextDouble() - 0.5D) * 0.5D;
-                    double spawnY = pos.getY() + 0.5D;
-                    double spawnZ = pos.getZ() + 0.5D + (worldIn.rand.nextDouble() - 0.5D) * 0.5D;
-                    mite.setLocationAndAngles(spawnX, spawnY, spawnZ, worldIn.rand.nextFloat() * 360.0F, 0.0F);
-                    worldIn.spawnEntity(mite);
-                }
-            }
-            return true; // 返回 true 表示处理了右键事件，不再继续传递
-        }
-
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 

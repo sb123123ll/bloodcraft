@@ -146,6 +146,21 @@ public class BloodMod {
             'F', net.minecraft.item.crafting.Ingredient.fromItem(com.qiamao.blood.init.ModItems.STING_CORE_FRAGMENT)
         );
 
+        // 注册工作台合成配方：血液淬炼台
+        // 木棍 血液核心 木棍
+        // 圆石台阶 受诅咒的肉块 圆石台阶
+        GameRegistry.addShapedRecipe(
+            new net.minecraft.util.ResourceLocation(MODID, "blood_tempering_altar"),
+            new net.minecraft.util.ResourceLocation(MODID, "blocks"),
+            new net.minecraft.item.ItemStack(com.qiamao.blood.init.ModBlocks.BLOOD_TEMPERING_ALTAR),
+            "SBS",
+            "CFC",
+            'S', net.minecraft.item.crafting.Ingredient.fromItem(net.minecraft.init.Items.STICK),
+            'B', net.minecraft.item.crafting.Ingredient.fromItem(com.qiamao.blood.init.ModItems.BLOOD_CORE),
+            'C', net.minecraft.item.crafting.Ingredient.fromStacks(new net.minecraft.item.ItemStack(net.minecraft.init.Blocks.STONE_SLAB, 1, 3)),
+            'F', net.minecraft.item.crafting.Ingredient.fromItem(com.qiamao.blood.init.ModItems.CURSED_FLESH_CHUNK_ITEM)
+        );
+
         // --- 注册实体自然生成 ---
         // 获取所有可用的生物群系，并分离出沙漠群系
         java.util.List<net.minecraft.world.biome.Biome> spawnBiomes = new java.util.ArrayList<>();
@@ -308,23 +323,26 @@ public class BloodMod {
                 bloodSurgingLand
         );
 
-        // 血液猎犬在血液翻腾之地的总权重设为 12
-        // 因为外界基础权重是 7，所以这里额外追加 5
+        // 血液翻腾之地额外追加：权重5 (总计12)
+
+        // --- 迫近者生成 (Approacher) ---
+        // 主世界全部群系地表生成 (权重7，单只) - 改为 MONSTER 使其只在晚上生成
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
-                com.qiamao.blood.entity.EntityBloodHound.class,
-                5,
-                2,
-                4,
-                net.minecraft.entity.EnumCreatureType.MONSTER,
-                bloodSurgingLand
+                com.qiamao.blood.entity.EntityApproacher.class, 
+                7, 
+                1, 
+                1, 
+                net.minecraft.entity.EnumCreatureType.MONSTER, 
+                spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
+        // 主世界全部群系地下洞穴生成 (权重6，单只) - 使用 MONSTER 在黑暗洞穴生成
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
-                com.qiamao.blood.entity.EntityBloodHound.class,
-                5,
-                2,
-                4,
-                net.minecraft.entity.EnumCreatureType.CREATURE,
-                bloodSurgingLand
+                com.qiamao.blood.entity.EntityApproacher.class, 
+                6, 
+                1, 
+                1, 
+                net.minecraft.entity.EnumCreatureType.MONSTER, 
+                spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
     }
 

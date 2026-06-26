@@ -96,51 +96,8 @@ public class ModItems {
         @Override
         protected void onFoodEaten(net.minecraft.item.ItemStack stack, World worldIn, EntityPlayer player) {
             if (!worldIn.isRemote) {
-                // 基础惩罚效果：每次必得
-                // 1. 失明5秒
-                player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * 20, 0));
-                
-                // 2. 反胃8~15秒
-                int nauseaDuration = (8 + worldIn.rand.nextInt(8)) * 20; // 8 到 15 (8 + [0, 7])
-                player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, nauseaDuration, 0));
-
-                // 50%的几率触发强力厄运惩罚，且不获得增益
-                if (worldIn.rand.nextFloat() < 0.50F) {
-                    // 1. 凋零5级（对应等级4） 8分钟
-                    player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 8 * 60 * 20, 4));
-                    
-                    // 2. 虚弱2级（对应等级1） 2分钟
-                    player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * 60 * 20, 1));
-                    
-                    // 3. 缓慢1级（对应等级0） 10~20秒
-                    int slownessDuration = (10 + worldIn.rand.nextInt(11)) * 20; // 10 到 20 (10 + [0, 10])
-                    player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, slownessDuration, 0));
-                } else {
-                    // 没有触发厄运时，获得以下增益效果
-                    // 1. 生命恢复1级（对应等级0） 25秒
-                    player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 25 * 20, 0));
-                    
-                    // 2. 抗性提升2级（对应等级1） 25秒
-                    player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 25 * 20, 1));
-                    
-                    // 3. 急迫1级（对应等级0） 2分钟
-                    player.addPotionEffect(new PotionEffect(MobEffects.HASTE, 2 * 60 * 20, 0));
-                    
-                    // 4. 疾跑1级（对应等级0） 50秒 (原版速度效果)
-                    player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 50 * 20, 0));
-                    
-                    // 5. 跳跃提升1级（对应等级0） 20秒
-                    player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20 * 20, 0));
-                    
-                    // 6. 血量上限2级（对应等级1） 1分钟
-                    player.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 60 * 20, 1));
-                    
-                    // 7. 力量1级（对应等级0） 1分钟
-                    player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 60 * 20, 0));
-                    
-                    // 8. 瞬间治疗1级（对应等级0） 瞬间
-                    player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 0));
-                }
+                // 仅赋予 5 秒反胃效果
+                player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 5 * 20, 0));
             }
         }
     }

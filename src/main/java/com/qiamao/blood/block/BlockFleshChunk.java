@@ -26,7 +26,7 @@ public class BlockFleshChunk extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockFleshChunk(String name) {
-        super(Material.CLAY); // 使用CLAY材料，挖掘速度与沙子相同
+        super(Material.ROCK); // 使用ROCK材料，确保刷怪蛋和其他方块可以正常交互
         // 默认状态设为朝北
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         

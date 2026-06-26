@@ -101,9 +101,6 @@ public class ModSounds {
             .setRegistryName(BloodMod.MODID, "event.desire");
 
     // 视神经 (Optic Nerve) 的音效
-    public static final SoundEvent OPTIC_NERVE_AMBIENT = new SoundEvent(new ResourceLocation(BloodMod.MODID, "entity.optic_nerve.ambient"))
-            .setRegistryName(BloodMod.MODID, "entity.optic_nerve.ambient");
-            
     public static final SoundEvent OPTIC_NERVE_TARGET = new SoundEvent(new ResourceLocation(BloodMod.MODID, "entity.optic_nerve.target"))
             .setRegistryName(BloodMod.MODID, "entity.optic_nerve.target");
             
@@ -113,6 +110,10 @@ public class ModSounds {
     // 毒刺之杖发射音效
     public static final SoundEvent VENOMOUS_STINGER_STAFF_SHOOT = new SoundEvent(new ResourceLocation(BloodMod.MODID, "item.venomous_stinger_staff.shoot"))
             .setRegistryName(BloodMod.MODID, "item.venomous_stinger_staff.shoot");
+
+    // 迫近者
+    public static final SoundEvent APPROACHER_AMBIENT = new SoundEvent(new ResourceLocation(BloodMod.MODID, "entity.approacher.ambient"))
+            .setRegistryName(BloodMod.MODID, "entity.approacher.ambient");
 
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
@@ -142,10 +143,10 @@ public class ModSounds {
             CULTIST_PREACHER_HURT,
             CULTIST_PREACHER_DEATH,
             DESIRE_EVENT,
-            OPTIC_NERVE_AMBIENT,
             OPTIC_NERVE_TARGET,
             OPTIC_NERVE_STEP,
-            VENOMOUS_STINGER_STAFF_SHOOT
+            VENOMOUS_STINGER_STAFF_SHOOT,
+            APPROACHER_AMBIENT
         );
     }
 }

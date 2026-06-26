@@ -27,6 +27,11 @@ public class EntityOpticNerve extends EntityMob {
     // 声音计时器
     private int targetSoundTimer = 0;
     private int stepSoundTimer = 0;
+    
+    // 索敌声音的循环控制变量
+    private int currentCycleCount = 0; // 当前大循环已经播放了多少次
+    private int targetCycleMax = 0;    // 本次大循环应该播放的总次数 (2-4次)
+    private boolean isResting = false; // 是否处于循环间的休息状态 (5-10秒)
 
     public EntityOpticNerve(World worldIn) {
         super(worldIn);
@@ -159,8 +164,8 @@ public class EntityOpticNerve extends EntityMob {
 
     @Override
     protected net.minecraft.util.SoundEvent getAmbientSound() {
-        // 原版系统会自动随机调用此方法播放待机声音
-        return com.qiamao.blood.init.ModSounds.OPTIC_NERVE_AMBIENT;
+        // 暂时移除闲时音效
+        return null;
     }
 
     public float getHeadSpinAngle() {

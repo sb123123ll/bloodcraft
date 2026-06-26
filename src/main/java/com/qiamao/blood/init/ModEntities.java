@@ -169,5 +169,16 @@ public class ModEntities {
                 .build();
 
         event.getRegistry().register(opticNerve);
+
+        // 注册 迫近者 (Approacher)
+        EntityEntry approacher = EntityEntryBuilder.create()
+                .entity(com.qiamao.blood.entity.EntityApproacher.class)
+                .id(new ResourceLocation(BloodMod.MODID, "approacher"), entityId++)
+                .name(BloodMod.MODID + ".approacher")
+                .tracker(80, 3, true)
+                .egg(0x2a3b2a, 0x5a7a5a) // 暗绿色底色，浅暗绿斑点
+                .build();
+
+        event.getRegistry().register(approacher);
     }
 }
