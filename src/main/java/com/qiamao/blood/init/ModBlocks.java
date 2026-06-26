@@ -19,6 +19,16 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = BloodMod.MODID)
 public class ModBlocks {
 
+    public static void initAltarRecipes() {
+        // 在这里注册所有的自定义配方！
+        // 示例：腐肉 (上方/下方) + 骨头 (上方/下方) -> 血腥糜烂的肉
+        com.qiamao.blood.api.AltarRecipeRegistry.addRecipe(
+            net.minecraft.init.Items.ROTTEN_FLESH, 
+            net.minecraft.init.Items.BONE, 
+            new net.minecraft.item.ItemStack(ModItems.GORY_FLESH, 1)
+        );
+    }
+
     // 实例化流体方块，它继承自 BlockFluidClassic
     public static final Block BLOCK_BLOOD = new BlockFluidClassic(ModFluids.FLUID_BLOOD, Material.WATER) {
         {

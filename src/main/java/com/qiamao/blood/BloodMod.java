@@ -25,7 +25,7 @@ import com.qiamao.blood.network.BloodNetwork;
 public class BloodMod {
     public static final String MODID = "blood";
     public static final String NAME = "Bloodcraft";
-    public static final String VERSION = "0.0.28a";
+    public static final String VERSION = "0.0.31a";
 
     @SidedProxy(clientSide = "com.qiamao.blood.proxy.ClientProxy", serverSide = "com.qiamao.blood.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -72,6 +72,9 @@ public class BloodMod {
 
         // 注册发射器行为
         com.qiamao.blood.init.ModItems.registerDispenserBehaviors();
+        
+        // 注册血祭坛合成配方
+        com.qiamao.blood.init.ModBlocks.initAltarRecipes();
 
         // 注册原木和木板的 OreDictionary
         // 这样它们就可以像原版木头一样用来合成木棍、工作台、木箱、木剑等任何使用木板的配方

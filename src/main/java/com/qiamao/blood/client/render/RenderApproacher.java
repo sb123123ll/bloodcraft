@@ -12,7 +12,15 @@ public class RenderApproacher extends RenderLiving<EntityApproacher> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(BloodMod.MODID, "textures/entity/approacher.png");
 
     public RenderApproacher(RenderManager renderManagerIn) {
-        super(renderManagerIn, new ModelApproacher(), 0.5F);
+        // 阴影大小也按比例放大 (0.5F * 1.28 = 0.64F)
+        super(renderManagerIn, new ModelApproacher(), 0.64F);
+    }
+
+    @Override
+    protected void preRenderCallback(EntityApproacher entitylivingbaseIn, float partialTickTime) {
+        // 将模型渲染大小缩放1.28倍
+        net.minecraft.client.renderer.GlStateManager.scale(1.28F, 1.28F, 1.28F);
+        super.preRenderCallback(entitylivingbaseIn, partialTickTime);
     }
 
     @Override

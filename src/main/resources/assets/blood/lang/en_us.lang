@@ -6,6 +6,7 @@ entity.blood.parasitic_steve.name=Blood Mite Mind-Controlled
 entity.blood.blood_mother.name=Blood Mother
 entity.blood.cultist_preacher.name=Preacher
 entity.blood.optic_nerve.name=Optic Nerve
+entity.blood.approacher.name=Approacher
 entity.blood.blood_hound.name=Blood Hound
 item.bucket_blood.name=Bucket of Blood
 item.blood_bottle.name=Bottle of Blood
@@ -24,6 +25,7 @@ item.venomous_stinger_dagger.name=Venomous Stinger Dagger
 item.venomous_stinger_staff.name=Venomous Stinger Staff
 item.blood_mite_meat.name=Blood Mite Meat
 item.optic_nerve_spawn_egg.name=Optic Nerve Spawn Egg
+item.approacher_spawn_egg.name=Approacher Spawn Egg
 fluid.blood=Blood
 tile.blood.name=Blood
 tile.cursed_flesh_chunk.name=Cursed Flesh Chunk
@@ -69,6 +71,17 @@ subtitles.entity.blood_mother.step=Blood Mother: Crawls
 subtitles.entity.cultist_preacher.ambient=Cultist Preacher: Whispers
 subtitles.entity.cultist_preacher.hurt=Cultist Preacher: Hurts
 subtitles.entity.cultist_preacher.death=Cultist Preacher: Dies
+
+subtitles.entity.approacher.ambient=Approacher: Growls
+subtitles.entity.approacher.hurt=Approacher: Hurts
+subtitles.entity.approacher.death=Approacher: Dies
+
+subtitles.entity.optic_nerve.ambient=Optic Nerve: Gazes
+subtitles.entity.optic_nerve.hurt=Optic Nerve: Hurts
+subtitles.entity.optic_nerve.death=Optic Nerve: Dies
+subtitles.entity.optic_nerve.step=Optic Nerve: Moves
+
+subtitles.event.desire=Whispers of the Abyss
 
 advancements.blood.root.title=Bloodcraft Age
 advancements.blood.root.description=Enter the world of flesh and blood

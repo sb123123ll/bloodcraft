@@ -6,6 +6,7 @@ entity.blood.parasitic_steve.name=血螨脑控
 entity.blood.blood_mother.name=血液母体
 entity.blood.cultist_preacher.name=传教士
 entity.blood.optic_nerve.name=视神经
+entity.blood.approacher.name=迫近者
 entity.blood.blood_hound.name=血液猎犬
 item.bucket_blood.name=桶装血液
 item.blood_bottle.name=瓶装血液
@@ -24,6 +25,7 @@ item.venomous_stinger_dagger.name=毒刺匕首
 item.venomous_stinger_staff.name=毒刺之杖
 item.blood_mite_meat.name=血螨肉
 item.optic_nerve_spawn_egg.name=视神经 刷怪蛋
+item.approacher_spawn_egg.name=迫近者 刷怪蛋
 fluid.blood=血液
 tile.blood.name=血液
 tile.cursed_flesh_chunk.name=§4§m受§r§4§m诅§r§4§m咒§r§4§m的§r§4§m肉§r§4§m块
@@ -69,6 +71,17 @@ subtitles.entity.blood_mother.step=血液母体：爬行
 subtitles.entity.cultist_preacher.ambient=邪教传教士：低语
 subtitles.entity.cultist_preacher.hurt=邪教传教士：受伤
 subtitles.entity.cultist_preacher.death=邪教传教士：死亡
+
+subtitles.entity.approacher.ambient=迫近者：低吼
+subtitles.entity.approacher.hurt=迫近者：受伤
+subtitles.entity.approacher.death=迫近者：死亡
+
+subtitles.entity.optic_nerve.ambient=视神经：凝视
+subtitles.entity.optic_nerve.hurt=视神经：受伤
+subtitles.entity.optic_nerve.death=视神经：死亡
+subtitles.entity.optic_nerve.step=视神经：移动
+
+subtitles.event.desire=深渊的低语
 
 advancements.blood.root.title=血腥时代
 advancements.blood.root.description=踏入血肉与鲜血的世界

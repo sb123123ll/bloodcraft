@@ -6,42 +6,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityBloodAltar extends TileEntity {
-
-    // ==========================================
-    // 配方系统注册
-    // ==========================================
-    public static class AltarRecipe {
-        public final net.minecraft.item.Item inputA;
-        public final net.minecraft.item.Item inputB;
-        public final ItemStack output;
-
-        public AltarRecipe(net.minecraft.item.Item inputA, net.minecraft.item.Item inputB, ItemStack output) {
-            this.inputA = inputA;
-            this.inputB = inputB;
-            this.output = output;
-        }
-    }
-
-    public static final java.util.List<AltarRecipe> RECIPES = new java.util.ArrayList<>();
-
-    static {
-        // 在这里添加所有的自定义配方！
-        // 示例：腐肉 (上方) + 骨头 (下方) -> 血腥糜烂的肉
-        RECIPES.add(new AltarRecipe(
-            net.minecraft.init.Items.ROTTEN_FLESH, 
-            net.minecraft.init.Items.BONE, 
-            new ItemStack(com.qiamao.blood.init.ModItems.GORY_FLESH, 1)
-        ));
-        
-        // 如果有新的配方，只需要在这里继续 RECIPES.add(...) 即可！
-    }
-    // ==========================================
+public class TileEntityBloodAltar extends TileEntity implements net.minecraft.inventory.ISidedInventory {
 
     private boolean isProcessing = false;
 
@@ -103,10 +75,145 @@ public class TileEntityBloodAltar extends TileEntity {
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == EnumFacing.UP) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(this, EnumFacing.UP));
+            } else if (facing == EnumFacing.DOWN) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(this, EnumFacing.DOWN));
+            } else if (facing != null) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(this, facing));
+            }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
         }
         return super.getCapability(capability, facing);
     }
+
+    // ==========================================
+    // ISidedInventory 实现 (供原版漏斗和面包装器使用)
+    // ==========================================
+    private static final int[] SLOTS_TOP = new int[] {0};
+    private static final int[] SLOTS_BOTTOM = new int[] {2};
+    private static final int[] SLOTS_SIDES = new int[] {1};
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        if (side == EnumFacing.DOWN) {
+            return SLOTS_BOTTOM; // 底部只能访问输出槽
+        } else if (side == EnumFacing.UP) {
+            return SLOTS_TOP; // 顶部只能访问上方输入槽
+        } else {
+            return SLOTS_SIDES; // 侧面只能访问下方输入槽
+        }
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return this.isItemValidForSlot(index, itemStackIn);
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        if (direction == EnumFacing.DOWN && index == 2) {
+            return true; // 只能从底部抽出输出槽的物品
+        }
+        return false; // 其他面不允许抽出
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return itemHandler.getSlots();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return itemHandler.getStackInSlot(index);
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        return itemHandler.extractItem(index, count, false);
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = itemHandler.getStackInSlot(index);
+        itemHandler.setStackInSlot(index, ItemStack.EMPTY);
+        return stack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        itemHandler.setStackInSlot(index, stack);
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
+    }
+
+    @Override
+    public boolean isUsableByPlayer(net.minecraft.entity.player.EntityPlayer player) {
+        return this.world.getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
+    }
+
+    @Override
+    public void openInventory(net.minecraft.entity.player.EntityPlayer player) {}
+
+    @Override
+    public void closeInventory(net.minecraft.entity.player.EntityPlayer player) {}
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return itemHandler.isItemValid(index, stack);
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+        }
+    }
+
+    @Override
+    public String getName() {
+        return "container.blood_altar";
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public net.minecraft.util.text.ITextComponent getDisplayName() {
+        return new net.minecraft.util.text.TextComponentTranslation(this.getName());
+    }
+
+    // ==========================================
+    // 逻辑部分
+    // ==========================================
 
     // 获取背包以便在 Container 中绑定
     public ItemStackHandler getInventory() {
@@ -179,11 +286,9 @@ public class TileEntityBloodAltar extends TileEntity {
                     ItemStack result = ItemStack.EMPTY;
 
                     // 遍历配方列表，寻找匹配的合成
-                    for (AltarRecipe recipe : RECIPES) {
-                        if (inputA.getItem() == recipe.inputA && inputB.getItem() == recipe.inputB) {
-                            result = recipe.output.copy();
-                            break;
-                        }
+                    java.util.Optional<com.qiamao.blood.api.AltarRecipeRegistry.AltarRecipe> matchedRecipe = com.qiamao.blood.api.AltarRecipeRegistry.getMatchingRecipe(inputA, inputB);
+                    if (matchedRecipe.isPresent()) {
+                        result = matchedRecipe.get().getOutput();
                     }
 
                     // 如果没有匹配到任何配方，退出循环

@@ -1,8 +1,6 @@
 package com.qiamao.blood.potion;
 
 import com.qiamao.blood.BloodMod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
@@ -84,22 +82,22 @@ public class PotionFear extends Potion {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderInventoryEffect(int x, int y, net.minecraft.potion.PotionEffect effect, Minecraft mc) {
+    public void renderInventoryEffect(int x, int y, net.minecraft.potion.PotionEffect effect, net.minecraft.client.Minecraft mc) {
         renderIcon(x + 6, y + 7, mc);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderHUDEffect(int x, int y, net.minecraft.potion.PotionEffect effect, Minecraft mc, float alpha) {
+    public void renderHUDEffect(int x, int y, net.minecraft.potion.PotionEffect effect, net.minecraft.client.Minecraft mc, float alpha) {
         renderIcon(x + 3, y + 3, mc);
     }
 
     @SideOnly(Side.CLIENT)
-    private void renderIcon(int x, int y, Minecraft mc) {
+    private void renderIcon(int x, int y, net.minecraft.client.Minecraft mc) {
         net.minecraft.client.renderer.GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(ICON);
         // 这里假设有一张包含图标的图，恐惧图标在 0,0 位置
-        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, 18, 18, 256, 256);
+        net.minecraft.client.gui.Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, 18, 18, 256, 256);
         // 渲染完图标后，必须将纹理重新绑定回原版药水界面的纹理，否则会导致其他药水或UI渲染混乱（比如产生红屏或贴图错乱）
         mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
     }

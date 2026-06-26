@@ -28,7 +28,9 @@ public class EntityApproacher extends EntityMob {
 
     public EntityApproacher(World worldIn) {
         super(worldIn);
-        this.setSize(0.8F, 1.8F);
+        // 原尺寸: 0.8F宽, 1.8F高
+        // 增大1.28倍: 宽 = 0.8 * 1.28 = 1.024F, 高 = 1.8 * 1.28 = 2.304F
+        this.setSize(1.024F, 2.304F);
         this.experienceValue = 5;
     }
 

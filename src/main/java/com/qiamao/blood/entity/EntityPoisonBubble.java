@@ -106,14 +106,9 @@ public class EntityPoisonBubble extends EntityThrowable implements IEntityAdditi
      * 触发小型爆炸：只有粒子和1-3点范围伤害，不破坏方块
      */
     private void triggerSmallExplosion() {
-        // 在服务端生成爆炸粒子
-        if (this.world instanceof net.minecraft.world.WorldServer) {
-            ((net.minecraft.world.WorldServer) this.world).spawnParticle(
-                net.minecraft.util.EnumParticleTypes.EXPLOSION_NORMAL, 
-                this.posX, this.posY, this.posZ, 
-                10, 0.5D, 0.5D, 0.5D, 0.05D
-            );
-        }
+        // 在服务端不能直接生成自定义粒子，因为 Particle 类是 @SideOnly(Side.CLIENT) 的
+        // 因此我们发送一个自定义的粒子生成网络包，或者通过设置实体状态在 handleStatusUpdate 中生成
+        this.world.setEntityState(this, (byte) 100); // 使用自定义状态码 100 触发爆炸粒子
         
         // 播放爆炸音效
         this.world.playSound(null, this.posX, this.posY, this.posZ, 
@@ -128,6 +123,28 @@ public class EntityPoisonBubble extends EntityThrowable implements IEntityAdditi
                 float damage = 1.0F + this.rand.nextFloat() * 2.0F; // 1.0 到 3.0 的伤害
                 entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setExplosion(), damage);
             }
+        }
+    }
+
+    @Override
+    @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 100) {
+            // 在客户端生成我们自定义的淡绿色高透明度爆炸粒子
+            for (int i = 0; i < 10; ++i) {
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                double px = this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
+                double py = this.posY + (double)(this.rand.nextFloat() * this.height);
+                double pz = this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
+                
+                net.minecraft.client.Minecraft.getMinecraft().effectRenderer.addEffect(
+                    new com.qiamao.blood.client.particle.ParticlePoisonExplosion(this.world, px, py, pz, d0, d1, d2)
+                );
+            }
+        } else {
+            super.handleStatusUpdate(id);
         }
     }
 
