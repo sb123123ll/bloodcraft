@@ -41,8 +41,7 @@ public class EntityBloodSeeker extends EntityMob implements IRangedAttackMob {
     private boolean isSpawnedByEgg = false;
     private EntityLivingBase delayedTarget = null;
     
-    // 客户端动画计时器
-    @SideOnly(Side.CLIENT)
+    // 客户端动画计时器 (移除 @SideOnly 防止服务端崩服)
     public int clientShootTimer = 0;
 
     public EntityBloodSeeker(World worldIn) {

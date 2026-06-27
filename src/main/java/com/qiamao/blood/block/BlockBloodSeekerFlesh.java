@@ -99,10 +99,16 @@ public class BlockBloodSeekerFlesh extends Block {
         super.onEntityWalk(worldIn, pos, entityIn);
         
         // 物理减速机制：当实体在肉块上行走时，将其速度降低 25% (即乘以 0.75)
-        // 这种减速是直接修改实体的物理运动向量，不会给玩家添加任何药水效果图标
-        // 原版灵魂沙和黏液块也是通过这种方式或者 slipperiness 来实现的
         entityIn.motionX *= 0.75D;
         entityIn.motionZ *= 0.75D;
+
+        // 移除凋零效果，改为类似岩浆块的直接扣血 (对所有生物生效)
+        // 使用与岩浆块相同的热伤害来源 (HOT_FLOOR)
+        if (!worldIn.isRemote && entityIn instanceof EntityLivingBase) {
+            EntityLivingBase livingBase = (EntityLivingBase) entityIn;
+            // 每 ticks 造成伤害，类似原版岩浆块 (伤害1.0F)
+            livingBase.attackEntityFrom(net.minecraft.util.DamageSource.HOT_FLOOR, 1.0F);
+        }
     }
 
     /**

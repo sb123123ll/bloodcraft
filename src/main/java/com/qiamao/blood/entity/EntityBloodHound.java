@@ -215,4 +215,28 @@ public class EntityBloodHound extends EntityWolf {
             return (0.55F - (float)(this.getMaxHealth() - this.getHealth()) * 0.02F) * (float)Math.PI;
         }
     }
+
+    @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
+    @Override
+    public void handleStatusUpdate(byte id) {
+        if (id == 101) {
+            // 生成红色变身粒子
+            for (int i = 0; i < 40; ++i) {
+                double d0 = this.rand.nextGaussian() * 0.05D;
+                double d1 = this.rand.nextGaussian() * 0.05D;
+                double d2 = this.rand.nextGaussian() * 0.05D;
+                net.minecraft.client.Minecraft.getMinecraft().effectRenderer.addEffect(
+                    new com.qiamao.blood.client.particle.ParticleBloodHoundTransform(
+                        this.world, 
+                        this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, 
+                        this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), 
+                        this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, 
+                        d0, d1, d2
+                    )
+                );
+            }
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
 }

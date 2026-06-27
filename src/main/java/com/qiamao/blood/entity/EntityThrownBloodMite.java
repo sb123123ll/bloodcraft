@@ -225,7 +225,7 @@ public class EntityThrownBloodMite extends EntityThrowable implements IEntityAdd
         return result;
     }
 
-    @SideOnly(Side.CLIENT)
+    // 移除 @SideOnly(Side.CLIENT) 防止服务端调用报错
     private void spawnTrailParticles() {
         for (int i = 0; i < 3; i++) {
             double offsetX = (this.rand.nextDouble() - 0.5D) * 0.3D;

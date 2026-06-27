@@ -27,6 +27,39 @@ public class ModBlocks {
             net.minecraft.init.Items.BONE, 
             new net.minecraft.item.ItemStack(ModItems.GORY_FLESH, 1)
         );
+
+        // 注册毒刺之杖的修复配方
+        com.qiamao.blood.api.AltarRecipeRegistry.addCustomRecipe(new com.qiamao.blood.api.AltarRecipeRegistry.IAltarRecipeHandler() {
+            @Override
+            public boolean matches(net.minecraft.item.ItemStack slotA, net.minecraft.item.ItemStack slotB) {
+                if (slotA.isEmpty() || slotB.isEmpty()) return false;
+                
+                boolean match1 = slotA.getItem() == com.qiamao.blood.init.ModItems.VENOMOUS_STINGER_STAFF && 
+                                 slotB.getItem() == com.qiamao.blood.init.ModItems.STING_CORE_FRAGMENT && 
+                                 slotA.isItemDamaged(); // 必须有损耗才能修复
+                                 
+                boolean match2 = slotB.getItem() == com.qiamao.blood.init.ModItems.VENOMOUS_STINGER_STAFF && 
+                                 slotA.getItem() == com.qiamao.blood.init.ModItems.STING_CORE_FRAGMENT && 
+                                 slotB.isItemDamaged();
+                                 
+                return match1 || match2;
+            }
+
+            @Override
+            public net.minecraft.item.ItemStack getCraftingResult(net.minecraft.item.ItemStack slotA, net.minecraft.item.ItemStack slotB) {
+                net.minecraft.item.ItemStack staff = slotA.getItem() == com.qiamao.blood.init.ModItems.VENOMOUS_STINGER_STAFF ? slotA : slotB;
+                net.minecraft.item.ItemStack repairedStaff = staff.copy();
+                
+                int maxDamage = repairedStaff.getMaxDamage();
+                int repairAmount = maxDamage / 4;
+                int newDamage = Math.max(0, repairedStaff.getItemDamage() - repairAmount);
+                repairedStaff.setItemDamage(newDamage);
+                
+                // 返回数量必须为1
+                repairedStaff.setCount(1);
+                return repairedStaff;
+            }
+        });
     }
 
     // 实例化流体方块，它继承自 BlockFluidClassic

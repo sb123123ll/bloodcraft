@@ -282,6 +282,26 @@ public class EntityBloodEndermite extends EntityMob implements IRangedAttackMob 
     }
 
     @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
+        // 50%基础概率掉落1个血螨肉
+        float dropChance = 0.5F;
+        
+        // 抢夺附魔可以增加掉落概率（每级增加 15% 概率）
+        if (lootingModifier > 0) {
+            dropChance += lootingModifier * 0.15F;
+        }
+
+        if (this.rand.nextFloat() < dropChance) {
+            // 抢夺附魔还可以小概率增加掉落数量
+            int count = 1;
+            if (lootingModifier > 0 && this.rand.nextFloat() < (lootingModifier * 0.1F)) {
+                count += this.rand.nextInt(lootingModifier + 1);
+            }
+            this.dropItem(com.qiamao.blood.init.ModItems.BLOOD_MITE_MEAT, count);
+        }
+    }
+
+    @Override
     public void onDeath(net.minecraft.util.DamageSource cause) {
         super.onDeath(cause);
         // 增加击杀统计，使玩家击杀血螨能获得原版怪物猎人成就
@@ -290,11 +310,6 @@ public class EntityBloodEndermite extends EntityMob implements IRangedAttackMob 
             net.minecraft.entity.player.EntityPlayerMP player = (net.minecraft.entity.player.EntityPlayerMP) entity;
             // MOB_KILLS 是怪物击杀总统计，触发怪物猎人成就
             player.addStat(net.minecraft.stats.StatList.MOB_KILLS, 1);
-        }
-
-        // 50%概率掉落1个血螨肉
-        if (!this.world.isRemote && this.rand.nextFloat() < 0.5F) {
-            this.dropItem(com.qiamao.blood.init.ModItems.BLOOD_MITE_MEAT, 1);
         }
     }
 }

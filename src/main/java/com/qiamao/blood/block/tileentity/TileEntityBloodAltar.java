@@ -238,83 +238,54 @@ public class TileEntityBloodAltar extends TileEntity implements net.minecraft.in
         try {
             boolean craftedAny = false;
 
-            // 首先检查是否是修复毒刺之杖的特殊配方
-            if (currentA.getItem() == com.qiamao.blood.init.ModItems.VENOMOUS_STINGER_STAFF && 
-                currentB.getItem() == com.qiamao.blood.init.ModItems.STING_CORE_FRAGMENT) {
-                
-                ItemStack outputC = itemHandler.getStackInSlot(2);
-                
-                // 只有输出槽为空时才能进行修复
-                if (outputC.isEmpty()) {
-                    // 检查法杖是否有损耗
-                    if (currentA.isItemDamaged()) {
-                        // 消耗下面槽位的一个毒刺核心碎片
-                        itemHandler.extractItem(1, 1, false);
-                        
-                        // 复制上面槽位的法杖
-                        ItemStack repairedStaff = currentA.copy();
-                        
-                        // 计算修复量（总耐久的四分之一）
-                        int maxDamage = repairedStaff.getMaxDamage();
-                        int repairAmount = maxDamage / 4;
-                        
-                        // 设置新的损伤值，但不低于0
-                        int newDamage = Math.max(0, repairedStaff.getItemDamage() - repairAmount);
-                        repairedStaff.setItemDamage(newDamage);
-                        
-                        // 消耗上面槽位的法杖
-                        itemHandler.extractItem(0, 1, false);
-                        
-                        // 将修复后的法杖放入输出槽
-                        itemHandler.setStackInSlot(2, repairedStaff);
-                        craftedAny = true;
-                    }
+            // 常规及自定义配方逻辑统一处理
+            int safetyCounter = 0;
+            while (safetyCounter < 64) {
+                safetyCounter++;
+                ItemStack inputA = itemHandler.getStackInSlot(0); // 上面槽位 (A)
+                ItemStack inputB = itemHandler.getStackInSlot(1); // 下面槽位 (B)
+                ItemStack outputC = itemHandler.getStackInSlot(2); // 输出槽位 (C)
+
+                // 只要有一个材料槽为空，就不可能合成，退出循环
+                if (inputA.isEmpty() || inputB.isEmpty()) {
+                    break;
                 }
-            } else {
-                // 常规合成配方逻辑
-                // 使用 while 循环：只要材料足够，瞬间把整叠物品全部转化完
-                while (true) {
-                    ItemStack inputA = itemHandler.getStackInSlot(0); // 上面槽位 (A)
-                    ItemStack inputB = itemHandler.getStackInSlot(1); // 下面槽位 (B)
-                    ItemStack outputC = itemHandler.getStackInSlot(2); // 输出槽位 (C)
 
-                    // 只要有一个材料槽为空，就不可能合成，退出循环
-                    if (inputA.isEmpty() || inputB.isEmpty()) {
-                        break;
-                    }
+                ItemStack result = ItemStack.EMPTY;
 
-                    ItemStack result = ItemStack.EMPTY;
+                // 遍历配方列表，寻找匹配的合成
+                java.util.Optional<com.qiamao.blood.api.AltarRecipeRegistry.IAltarRecipeHandler> matchedRecipe = com.qiamao.blood.api.AltarRecipeRegistry.getMatchingRecipe(inputA, inputB);
+                if (matchedRecipe.isPresent()) {
+                    result = matchedRecipe.get().getCraftingResult(inputA, inputB);
+                }
 
-                    // 遍历配方列表，寻找匹配的合成
-                    java.util.Optional<com.qiamao.blood.api.AltarRecipeRegistry.AltarRecipe> matchedRecipe = com.qiamao.blood.api.AltarRecipeRegistry.getMatchingRecipe(inputA, inputB);
-                    if (matchedRecipe.isPresent()) {
-                        result = matchedRecipe.get().getOutput();
-                    }
+                // 如果没有匹配到任何配方，退出循环
+                if (result.isEmpty()) {
+                    break;
+                }
 
-                    // 如果没有匹配到任何配方，退出循环
-                    if (result.isEmpty()) {
-                        break;
-                    }
+                // 对于修复配方，通常不允许堆叠输出，且输出槽必须为空
+                // 检查输出槽是否能放得下生成的物品（输出槽为空，或者物品种类相同且没达到最大堆叠数，并且NBT标签匹配）
+                if (outputC.isEmpty() || 
+                    (outputC.getItem() == result.getItem() && 
+                     ItemStack.areItemStackTagsEqual(outputC, result) && 
+                     outputC.getCount() + result.getCount() <= outputC.getMaxStackSize())) {
+                    
+                    // 消耗材料 A 和 B (各消耗 1 个)
+                    itemHandler.extractItem(0, 1, false);
+                    itemHandler.extractItem(1, 1, false);
 
-                    // 检查输出槽是否能放得下生成的物品（输出槽为空，或者物品种类相同且没达到最大堆叠数）
-                    if (outputC.isEmpty() || (outputC.getItem() == result.getItem() && outputC.getCount() + result.getCount() <= outputC.getMaxStackSize())) {
-                        
-                        // 消耗材料 A 和 B (各消耗 1 个)
-                        itemHandler.extractItem(0, 1, false);
-                        itemHandler.extractItem(1, 1, false);
-
-                        // 产出物品 C
-                        if (outputC.isEmpty()) {
-                            itemHandler.setStackInSlot(2, result);
-                        } else {
-                            outputC.grow(result.getCount());
-                            itemHandler.setStackInSlot(2, outputC);
-                        }
-                        craftedAny = true;
+                    // 产出物品 C
+                    if (outputC.isEmpty()) {
+                        itemHandler.setStackInSlot(2, result);
                     } else {
-                        // 输出槽满了，停止合成
-                        break;
+                        outputC.grow(result.getCount());
+                        itemHandler.setStackInSlot(2, outputC);
                     }
+                    craftedAny = true;
+                } else {
+                    // 输出槽满了或不可叠加，停止合成
+                    break;
                 }
             }
 

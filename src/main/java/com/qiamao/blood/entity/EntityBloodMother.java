@@ -167,6 +167,22 @@ public class EntityBloodMother extends EntityMob {
     }
 
     @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
+        int count = 5 + this.rand.nextInt(5); // 基础掉落 5-9 个
+        if (lootingModifier > 0) {
+            count += this.rand.nextInt(lootingModifier * 2 + 1); // 抢夺附魔增加掉落数量
+        }
+        
+        this.dropItem(com.qiamao.blood.init.ModItems.BLOOD_MITE_MEAT, count);
+        
+        // 8% 基础概率掉落血液核心
+        float coreChance = 0.08F + (lootingModifier * 0.05F); // 抢夺每级增加5%概率
+        if (this.rand.nextFloat() < coreChance) {
+            this.dropItem(com.qiamao.blood.init.ModItems.BLOOD_CORE, 1);
+        }
+    }
+
+    @Override
     public void onDeath(net.minecraft.util.DamageSource cause) {
         super.onDeath(cause);
         
@@ -178,15 +194,6 @@ public class EntityBloodMother extends EntityMob {
             // 玩家击杀血液母体，触发肉块地形生成
             if (!this.world.isRemote) {
                 generateFleshTerrain(this.world, new net.minecraft.util.math.BlockPos(this));
-            }
-        }
-
-        if (!this.world.isRemote) {
-            this.dropItem(com.qiamao.blood.init.ModItems.BLOOD_MITE_MEAT, 5 + this.rand.nextInt(5));
-            
-            // 8% 概率掉落血液核心
-            if (this.rand.nextFloat() < 0.08F) {
-                this.dropItem(com.qiamao.blood.init.ModItems.BLOOD_CORE, 1);
             }
         }
     }

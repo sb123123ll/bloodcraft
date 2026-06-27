@@ -14,6 +14,7 @@ public class RenderBloodHound extends RenderLiving<EntityBloodHound> {
     public RenderBloodHound(RenderManager renderManagerIn) {
         super(renderManagerIn, new ModelBloodHound(), 0.5F);
         this.addLayer(new LayerBloodHoundCollar(this));
+        this.addLayer(new LayerBloodHoundMites(this));
     }
 
     @Override

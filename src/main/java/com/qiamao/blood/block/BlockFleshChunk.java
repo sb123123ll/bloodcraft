@@ -123,6 +123,13 @@ public class BlockFleshChunk extends Block {
         // 物理减速25% - 与渝血者肉块保持一致
         entityIn.motionX *= 0.75D;
         entityIn.motionZ *= 0.75D;
+
+        // 移除凋零效果，改为类似岩浆块的直接扣血 (对所有生物生效)
+        if (!worldIn.isRemote && entityIn instanceof EntityLivingBase) {
+            EntityLivingBase livingBase = (EntityLivingBase) entityIn;
+            // 造成1点伤害 (半颗心)
+            livingBase.attackEntityFrom(net.minecraft.util.DamageSource.HOT_FLOOR, 1.0F);
+        }
     }
 
     /**
