@@ -53,9 +53,10 @@ public class ModelRegistryHandler {
         RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityPoisonBubble.class, com.qiamao.blood.client.render.RenderPoisonBubble::new);
         RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityBloodMother.class, com.qiamao.blood.client.render.RenderBloodMother::new);
         RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityCultistPreacher.class, com.qiamao.blood.client.render.RenderCultistPreacher::new);
-        RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityOpticNerve.class, com.qiamao.blood.client.render.RenderOpticNerve::new);
         RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityBloodHound.class, com.qiamao.blood.client.render.RenderBloodHound::new);
+        RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityOpticNerve.class, com.qiamao.blood.client.render.RenderOpticNerve::new);
         RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityApproacher.class, com.qiamao.blood.client.render.RenderApproacher::new);
+        RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntityBloodNematode.class, com.qiamao.blood.client.render.RenderBloodNematode::new);
         RenderingRegistry.registerEntityRenderingHandler(com.qiamao.blood.entity.EntitySplashBlood.class, manager -> new com.qiamao.blood.client.render.RenderSplashBlood(manager, net.minecraft.client.Minecraft.getMinecraft().getRenderItem()));
 
         // 为 bucket_blood 注册模型资源位置，"inventory" 代表物品栏中的状态

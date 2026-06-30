@@ -118,6 +118,9 @@ public class EntityApproacher extends EntityMob {
             } else {
                 this.moveStrafing = 0.0F;
             }
+            
+            // 飞行状态下禁用重力
+            this.setNoGravity(this.isFlying());
         } else {
             // 客户端飞行粒子等可在此添加
         }
@@ -139,7 +142,7 @@ public class EntityApproacher extends EntityMob {
 
     @Override
     protected Item getDropItem() {
-        return this.isBurning() ? ModItems.COOKED_GORY_FLESH : Items.ROTTEN_FLESH; // 假设使用烂肉，烧死掉落熟烂肉
+        return this.isBurning() ? ModItems.COOKED_GORY_FLESH : ModItems.GORY_FLESH; // 掉落模组内的烂肉
     }
 
     @Override
@@ -176,16 +179,16 @@ public class EntityApproacher extends EntityMob {
         private final EntityApproacher entity;
         private final double speed;
         private EntityPlayer closestPlayer;
-        private Vec3d fleePos;
 
         public AIApproacherFlee(EntityApproacher entity, double speed) {
             this.entity = entity;
             this.speed = speed;
-            this.setMutexBits(3);
+            this.setMutexBits(3); // 占用移动和看向的通道，确保飞行时不被其他AI干扰
         }
 
         @Override
         public boolean shouldExecute() {
+            // 只有在残血时才触发逃跑
             if (this.entity.getHealth() > 7.0F) {
                 return false;
             }
@@ -194,9 +197,26 @@ public class EntityApproacher extends EntityMob {
         }
 
         @Override
+        public boolean shouldContinueExecuting() {
+            // 只要还在残血状态，并且玩家还在附近（甚至稍微远一点也继续飞，比如10格），就继续执行
+            if (this.entity.getHealth() > 7.0F) {
+                return false;
+            }
+            
+            // 如果找不到原来的玩家，重新找一个
+            if (this.closestPlayer == null || !this.closestPlayer.isEntityAlive()) {
+                this.closestPlayer = this.entity.world.getClosestPlayerToEntity(this.entity, 12.0D); // 扩大搜索范围以保持逃跑
+            }
+            
+            // 如果12格内依然有玩家，继续飞；否则停止飞行落地
+            return this.closestPlayer != null && this.entity.getDistance(this.closestPlayer) < 12.0D;
+        }
+
+        @Override
         public void startExecuting() {
             this.entity.setFlying(true);
             this.entity.setAttackTarget(null);
+            this.entity.setNoGravity(true); // 确保一开始就没有重力
         }
 
         @Override
@@ -204,42 +224,45 @@ public class EntityApproacher extends EntityMob {
             if (this.closestPlayer != null) {
                 Vec3d entityPos = new Vec3d(this.entity.posX, this.entity.posY, this.entity.posZ);
                 Vec3d playerPos = new Vec3d(this.closestPlayer.posX, this.closestPlayer.posY, this.closestPlayer.posZ);
+                // 计算远离玩家的方向
                 Vec3d dir = entityPos.subtract(playerPos).normalize();
                 
-                // 飞行逻辑：向反方向移动，飞行高度和移动更自由
+                // 飞行逻辑：向反方向移动，并保持一定高度
                 double targetY = this.entity.posY;
                 
-                // 保持离地大约 3-5 格的高度，不再是贴地飞行
-                if (this.entity.world.isAirBlock(this.entity.getPosition().down(4))) {
-                    targetY -= 0.15; // 太高了稍微降一点
-                } else if (!this.entity.world.isAirBlock(this.entity.getPosition().down(2))) {
-                    targetY += 0.25; // 太低了升起
+                // 探测下方空间，保持离地大约 4-6 格的高度
+                if (this.entity.world.isAirBlock(this.entity.getPosition().down(6))) {
+                    targetY -= 0.1; // 太高了，缓慢下降
+                } else if (!this.entity.world.isAirBlock(this.entity.getPosition().down(4))) {
+                    targetY += 0.2; // 太低了，快速爬升
                 }
                 
                 // 添加蝙蝠风格的正弦波动，消除生硬的漂浮感
-                double waveY = Math.cos(this.entity.ticksExisted * 0.3) * 0.1;
+                double waveY = Math.cos(this.entity.ticksExisted * 0.3) * 0.05;
                 double waveX = Math.sin(this.entity.ticksExisted * 0.2) * 0.05;
                 double waveZ = Math.cos(this.entity.ticksExisted * 0.25) * 0.05;
                 
-                // 设置飞行速度 (蝙蝠的大约0.75倍)
-                // 增加基础水平速度，同时叠加波动，使飞行轨迹更自由流畅
-                double speedX = dir.x * 0.25 + waveX;
-                double speedZ = dir.z * 0.25 + waveZ;
-                double speedY = (targetY - this.entity.posY) * 0.15 + waveY;
+                // 设置飞行速度
+                double speedX = dir.x * 0.35 + waveX;
+                double speedZ = dir.z * 0.35 + waveZ;
+                double speedY = (targetY - this.entity.posY) * 0.2 + waveY;
                 
                 this.entity.motionX = speedX;
                 this.entity.motionZ = speedZ;
                 this.entity.motionY = speedY;
                 
-                // 身体转向逃跑方向
-                this.entity.rotationYaw = (float) (Math.atan2(this.entity.motionZ, this.entity.motionX) * (180D / Math.PI)) - 90.0F;
-                this.entity.renderYawOffset = this.entity.rotationYaw;
+                // 强制生物身体转向逃跑方向
+                float yaw = (float) (Math.atan2(this.entity.motionZ, this.entity.motionX) * (180D / Math.PI)) - 90.0F;
+                this.entity.rotationYaw = yaw;
+                this.entity.rotationYawHead = yaw;
+                this.entity.renderYawOffset = yaw;
             }
         }
 
         @Override
         public void resetTask() {
             this.entity.setFlying(false);
+            this.entity.setNoGravity(false); // 恢复重力
             this.closestPlayer = null;
         }
     }

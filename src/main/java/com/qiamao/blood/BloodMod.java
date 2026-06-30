@@ -25,7 +25,7 @@ import com.qiamao.blood.network.BloodNetwork;
 public class BloodMod {
     public static final String MODID = "blood";
     public static final String NAME = "Bloodcraft";
-    public static final String VERSION = "0.0.32a";
+    public static final String VERSION = "0.0.33a";
 
     @SidedProxy(clientSide = "com.qiamao.blood.proxy.ClientProxy", serverSide = "com.qiamao.blood.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -169,8 +169,9 @@ public class BloodMod {
         java.util.List<net.minecraft.world.biome.Biome> spawnBiomes = new java.util.ArrayList<>();
         java.util.List<net.minecraft.world.biome.Biome> desertBiomes = new java.util.ArrayList<>();
         for (net.minecraft.world.biome.Biome biome : net.minecraftforge.fml.common.registry.ForgeRegistries.BIOMES.getValuesCollection()) {
-            // 只有下雪的群系不生成 (SNOWY / COLD)
-            if (!net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.SNOWY) && 
+            // 恢复原样：只排除末地和下雪/寒冷的群系，不再一刀切排除平原
+            if (!net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.END) &&
+                !net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.SNOWY) && 
                 !net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.COLD)) {
                 
                 spawnBiomes.add(biome);
@@ -214,7 +215,7 @@ public class BloodMod {
         );
 
         // --- 血液猎犬生成 (Blood Hound) ---
-        // 权重7。每次2-4只。不在干燥和寒冷群系生成。
+        // 权重恢复为7。每次固定2只。不在干燥和寒冷群系生成。
         java.util.List<net.minecraft.world.biome.Biome> houndBiomes = new java.util.ArrayList<>();
         for (net.minecraft.world.biome.Biome biome : spawnBiomes) {
             if (!net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.SANDY) &&
@@ -229,7 +230,7 @@ public class BloodMod {
                 com.qiamao.blood.entity.EntityBloodHound.class, 
                 7, 
                 2, 
-                4, 
+                2, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
                 houndBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
@@ -238,7 +239,7 @@ public class BloodMod {
                 com.qiamao.blood.entity.EntityBloodHound.class, 
                 7, 
                 2, 
-                4, 
+                2, 
                 net.minecraft.entity.EnumCreatureType.CREATURE, 
                 houndBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
@@ -288,10 +289,10 @@ public class BloodMod {
         );
 
         // --- 寄生史蒂夫生成 (普通群系) ---
-        // 单只生成，权重 8
+        // 权重改成 7
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityParasiticSteve.class, 
-                8, 
+                7, 
                 1, 
                 1, // 单只生成
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
@@ -329,7 +330,7 @@ public class BloodMod {
         // 血液翻腾之地额外追加：权重5 (总计12)
 
         // --- 迫近者生成 (Approacher) ---
-        // 主世界全部群系地表生成 (权重7，单只) - 改为 MONSTER 使其只在晚上生成
+        // 主世界全部群系地表生成 (恢复权重为7，单只) - MONSTER
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityApproacher.class, 
                 7, 
@@ -338,7 +339,7 @@ public class BloodMod {
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
                 spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
-        // 主世界全部群系地下洞穴生成 (权重6，单只) - 使用 MONSTER 在黑暗洞穴生成
+        // 主世界全部群系地下洞穴生成 (恢复权重为6，单只) - MONSTER
         net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
                 com.qiamao.blood.entity.EntityApproacher.class, 
                 6, 
@@ -346,6 +347,38 @@ public class BloodMod {
                 1, 
                 net.minecraft.entity.EnumCreatureType.MONSTER, 
                 spawnBiomes.toArray(new net.minecraft.world.biome.Biome[0])
+        );
+
+        // --- 吸血线虫生成 (Blood Nematode) ---
+        // 在江河湖海的河底地面和雨林生物群系和矿洞生成，生成权重都是10，2-3只成群生成
+        java.util.List<net.minecraft.world.biome.Biome> nematodeBiomes = new java.util.ArrayList<>();
+        for (net.minecraft.world.biome.Biome biome : net.minecraftforge.fml.common.registry.ForgeRegistries.BIOMES.getValuesCollection()) {
+            if (net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.RIVER) ||
+                net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.OCEAN) ||
+                net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.WATER) ||
+                net.minecraftforge.common.BiomeDictionary.hasType(biome, net.minecraftforge.common.BiomeDictionary.Type.JUNGLE)) {
+                nematodeBiomes.add(biome);
+            }
+        }
+        
+        // WATER_CREATURE: 水下生成 (江河湖海的河底)
+        net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
+                com.qiamao.blood.entity.EntityBloodNematode.class, 
+                10, 
+                2, 
+                3, 
+                net.minecraft.entity.EnumCreatureType.WATER_CREATURE, 
+                nematodeBiomes.toArray(new net.minecraft.world.biome.Biome[0])
+        );
+        
+        // MONSTER: 陆地/地下洞穴生成 (雨林和矿洞)
+        net.minecraftforge.fml.common.registry.EntityRegistry.addSpawn(
+                com.qiamao.blood.entity.EntityBloodNematode.class, 
+                10, 
+                2, 
+                3, 
+                net.minecraft.entity.EnumCreatureType.MONSTER, 
+                nematodeBiomes.toArray(new net.minecraft.world.biome.Biome[0])
         );
     }
 

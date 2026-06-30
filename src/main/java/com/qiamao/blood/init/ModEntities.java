@@ -180,5 +180,16 @@ public class ModEntities {
                 .build();
 
         event.getRegistry().register(approacher);
+
+        // 注册 吸血线虫 (Blood Nematode)
+        EntityEntry bloodNematode = EntityEntryBuilder.create()
+                .entity(com.qiamao.blood.entity.EntityBloodNematode.class)
+                .id(new ResourceLocation(BloodMod.MODID, "blood_nematode"), entityId++)
+                .name(BloodMod.MODID + ".blood_nematode")
+                .tracker(80, 3, true)
+                .egg(0x8a1a1a, 0x3d0000) // 血液颜色和深红色
+                .build();
+
+        event.getRegistry().register(bloodNematode);
     }
 }

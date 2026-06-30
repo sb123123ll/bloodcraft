@@ -8,6 +8,7 @@ entity.blood.cultist_preacher.name=Preacher
 entity.blood.optic_nerve.name=Optic Nerve
 entity.blood.approacher.name=Approacher
 entity.blood.blood_hound.name=Blood Hound
+entity.blood.blood_nematode.name=Blood Nematode
 item.bucket_blood.name=Bucket of Blood
 item.blood_bottle.name=Bottle of Blood
 item.splash_blood_bottle.name=Splash Bottle of Blood

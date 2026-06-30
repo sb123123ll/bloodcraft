@@ -8,6 +8,7 @@ entity.blood.cultist_preacher.name=传教士
 entity.blood.optic_nerve.name=视神经
 entity.blood.approacher.name=迫近者
 entity.blood.blood_hound.name=血液猎犬
+entity.blood.blood_nematode.name=吸血线虫
 item.bucket_blood.name=桶装血液
 item.blood_bottle.name=瓶装血液
 item.splash_blood_bottle.name=喷溅型瓶装血液

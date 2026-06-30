@@ -345,13 +345,21 @@ public class BiomeEventHandler {
         BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
         Entity entity = event.getEntity();
 
+        boolean isModEntity = entity.getClass().getName().startsWith("com.qiamao.blood.entity");
+
+        // --- 全局：阻止本模组生物在超平坦自然生成 ---
+        if (isModEntity && world.getWorldType() == net.minecraft.world.WorldType.FLAT) {
+            // CheckSpawn 事件只在【自然生成】和【刷怪笼生成】时触发！
+            // 玩家使用【刷怪蛋】或【/summon 指令】时不会触发此事件。
+            // 因此在这里直接 DENY 就可以完美阻止自然生成，同时保留刷怪蛋功能。
+            event.setResult(Event.Result.DENY);
+            return;
+        }
+
         // 检查是否在血液翻腾之地群系
         if (world.getBiome(pos) != ModBiomes.BLOOD_SURGING_LAND) {
             return; // 不在血液群系，不干预
         }
-
-        // 只允许本模组生物生成
-        boolean isModEntity = entity.getClass().getName().startsWith("com.qiamao.blood.entity");
 
         if (!isModEntity) {
             // 阻止非本模组生物生成
@@ -397,6 +405,9 @@ public class BiomeEventHandler {
         // 跳过玩家和已死亡的实体
         if (entity instanceof net.minecraft.entity.player.EntityPlayer) return;
         if (!entity.isEntityAlive()) return;
+        
+        // 检查是否是本模组生物
+        boolean isModEntity = entity.getClass().getName().startsWith("com.qiamao.blood.entity");
 
         BlockPos pos = entity.getPosition();
         if (pos == null) return; // 防御性检查：位置为空则直接返回
@@ -407,9 +418,6 @@ public class BiomeEventHandler {
         if (biome != ModBiomes.BLOOD_SURGING_LAND) {
             return; // 不在血液群系，不干预
         }
-
-        // 检查是否是本模组生物
-        boolean isModEntity = entity.getClass().getName().startsWith("com.qiamao.blood.entity");
 
         if (!isModEntity) {
             // 阻止非本模组生物加入世界

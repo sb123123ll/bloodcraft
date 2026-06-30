@@ -149,6 +149,15 @@ public class BloodCreativeTab extends CreativeTabs {
         spawnEggApproacher.setTagCompound(nbtApproacher);
         spawnEggs.add(spawnEggApproacher);
 
+        // 9. 吸血线虫 刷怪蛋
+        ItemStack spawnEggNematode = new ItemStack(Items.SPAWN_EGG);
+        NBTTagCompound nbtNematode = new NBTTagCompound();
+        NBTTagCompound entityTagNematode = new NBTTagCompound();
+        entityTagNematode.setString("id", BloodMod.MODID + ":blood_nematode");
+        nbtNematode.setTag("EntityTag", entityTagNematode);
+        spawnEggNematode.setTagCompound(nbtNematode);
+        spawnEggs.add(spawnEggNematode);
+
         // 按分类顺序添加到最终列表中
         p_78018_1_.addAll(blocks);
         p_78018_1_.addAll(weapons);
